@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Kategori } from './../services/kategori';
+import { Category } from './../models/category.model';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-tab1',
@@ -8,6 +10,21 @@ import { Component } from '@angular/core';
 })
 export class Tab1Page {
 
-  constructor() {}
+  daftarKategori: Category[] = [];
 
+  constructor(private Kategori: Kategori) { }
+
+  ngOnInit() {
+    this.loadKategori();
+  }
+
+  loadKategori() {
+    this.daftarKategori = this.Kategori.getKategori();
+  }
+
+  pilihKategori(Category: Category) {
+    console.log('Kategori dipilih:', Category.nama);
+    // Nanti akan navigasi ke halaman daftar berita
+  }
 }
+
