@@ -1,0 +1,7 @@
+{
+  "name": "portalBerita",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
