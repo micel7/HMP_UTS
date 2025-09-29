@@ -12,15 +12,15 @@
 
   <div class="kategori-grid">
     <ion-card 
-      *ngFor="let Category of daftarKategori" 
-      (click)="pilihKategori(Category)"
-      [color]="Category.color">
+      *ngFor="let Categories of daftarKategori" 
+      (click)="pilihKategori(Categories)"
+      [color]="Categories.color">
       
       <ion-card-content>
         <div class="kategori-item">
-          <ion-icon [name]="Category.icon"></ion-icon>
-          <h3>{{ Category.nama }}</h3>
-          <p>{{ Category.jumlahBerita }} berita</p>
+          <ion-icon [name]="Categories.icon"></ion-icon>
+          <h3>{{ Categories.nama }}</h3>
+          <p>{{ Categories.jumlahBerita }} berita</p>
         </div>
       </ion-card-content>
     </ion-card>

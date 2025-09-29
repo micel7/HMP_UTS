@@ -1,18 +1,18 @@
 import { Kategori } from './../services/kategori';
-import { Category } from './../models/category.model';
+import { Categories } from '../models/categories.model';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-tab1',
-  templateUrl: 'tab1.page.html',
-  styleUrls: ['tab1.page.scss'],
+  selector: 'app-category',
+  templateUrl: 'category.page.html',
+  styleUrls: ['category.page.scss'],
   standalone: false,
 })
-export class Tab1Page {
+export class CategoryPage {
+  index = 0;
+  daftarKategori: Categories[] = [];
 
-  daftarKategori: Category[] = [];
-
-  constructor(private Kategori: Kategori) { }
+  constructor(private Kategori: Kategori) {}
 
   ngOnInit() {
     this.loadKategori();
@@ -22,9 +22,8 @@ export class Tab1Page {
     this.daftarKategori = this.Kategori.getKategori();
   }
 
-  pilihKategori(Category: Category) {
+  pilihKategori(Category: Categories) {
     console.log('Kategori dipilih:', Category.nama);
     // Nanti akan navigasi ke halaman daftar berita
   }
 }
-
