@@ -4,3 +4,4 @@ export interface Categories {
   color: string;
   jumlahBerita: number;
 }
+
