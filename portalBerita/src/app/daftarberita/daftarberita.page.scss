@@ -1,0 +1,16 @@
+// bikin card menjadi patokan untuk posisi absolut
+ion-card {
+    position: relative;
+  }
+  
+  // Mengatur posisi ikon favorit
+  .favorite-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 10; // biar ikon selalu di atas gambar
+  
+    ion-icon {
+      font-size: 28px; // bikin ikon lebih besar
+    }
+  }

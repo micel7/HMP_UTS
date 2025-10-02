@@ -7,6 +7,7 @@ import { Injectable } from '@angular/core';
 export class DataBerita {
     private dataBerita: Berita[] = [
         {
+            id: 1,
             judul: 'Judul 1',
             konten: 'Lorem Ipsum Dolor SiS Jamet',
             foto: 'assets/mrkrab.jpg',
@@ -17,6 +18,7 @@ export class DataBerita {
             isFavorite: true
         },
         {
+            id: 2,
             judul: 'Judul 2',
             konten: 'Lorem Ipsum Dolor SiS Jamet',
             foto: 'assets/mrkrab.jpg',
@@ -27,6 +29,7 @@ export class DataBerita {
             isFavorite: true
         },
         {
+            id: 3,
             judul: 'Judul 3',
             konten: 'Lorem Ipsum Dolor SiS Jamet',
             foto: 'assets/mrkrab.jpg',

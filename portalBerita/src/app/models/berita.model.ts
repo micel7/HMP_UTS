@@ -1,7 +1,7 @@
 import { Komentar } from './komentar.model';
 
 export interface Berita {
-//   id: number;
+  id: number;
   judul: string;    
   konten: string;
   foto: string;
