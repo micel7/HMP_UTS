@@ -1,6 +1,7 @@
 import { Kategori } from './../services/kategori';
 import { Categories } from '../models/categories.model';
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router'; 
 
 @Component({
   selector: 'app-category',
@@ -8,11 +9,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['category.page.scss'],
   standalone: false,
 })
-export class CategoryPage {
+export class CategoryPage implements OnInit {
   index = 0;
   daftarKategori: Categories[] = [];
 
-  constructor(private Kategori: Kategori) {}
+  constructor(private Kategori: Kategori, private router: Router) {}
 
   ngOnInit() {
     this.loadKategori();
@@ -24,6 +25,8 @@ export class CategoryPage {
 
   pilihKategori(Category: Categories) {
     console.log('Kategori dipilih:', Category.nama);
+
     // Nanti akan navigasi ke halaman daftar berita
+    this.router.navigate(['/daftarberita', Category.nama]);
   }
 }

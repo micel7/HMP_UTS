@@ -8,9 +8,9 @@ export class DataBerita {
     private dataBerita: Berita[] = [
         {
             id: 1,
-            judul: 'Judul 1',
-            konten: 'Lorem Ipsum Dolor SiS Jamet',
-            foto: 'assets/mrkrab.jpg',
+            judul: 'MU kalah lagi ',
+            konten: 'MU kalah lagi',
+            foto: 'assets/MU.jpg',
             gambarHalaman: ["mrkrab.jpg", "mrkrab.jpg", "mrkrab.jpg", "mrkrab.jpg"], // Minimal 4 gambar untuk halaman baca berita
             categories: ['Olahraga'],
             rating: [5, 4, 3],
@@ -42,5 +42,14 @@ export class DataBerita {
     ];
     getBerita(): Berita[] {
         return this.dataBerita;
+    }
+    toggleFavoriteStatus(id: number) {
+        // Cari berita yang cocok dengan id yang dikirim
+        const beritaItem = this.dataBerita.find(b => b.id === id); // cari berita yg cocok sm id yg dikirim
+    
+        // Jika berita ditemukan, balik nilainya
+        if (beritaItem) {
+            beritaItem.isFavorite = !beritaItem.isFavorite;
+        }
     }
 }

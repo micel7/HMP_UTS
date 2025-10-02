@@ -14,7 +14,8 @@
     <ion-card 
       *ngFor="let Categories of daftarKategori" 
       (click)="pilihKategori(Categories)"
-      [color]="Categories.color">
+      [color]="Categories.color"
+      button="true">
       
       <ion-card-content>
         <div class="kategori-item">
