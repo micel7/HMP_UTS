@@ -39,6 +39,28 @@ export class DataBerita {
             komentar: [], // Daftar komentar dari user
             isFavorite: false
         },
+        {
+            id: 4,
+            judul: 'Judul 4',
+            konten: 'Lorem Ipsum Dolor SiS Jamet',
+            foto: 'assets/mrkrab.jpg',
+            gambarHalaman: ["mrkrab.jpg", "mrkrab.jpg", "mrkrab.jpg", "mrkrab.jpg"], // Minimal 4 gambar untuk halaman baca berita
+            categories: ['Teknologi'],
+            rating: [2, 4, 3],
+            komentar: [], // Daftar komentar dari user
+            isFavorite: false
+        },
+        {
+            id: 5,
+            judul: 'Judul 5',
+            konten: 'Lorem Ipsum Dolor SiS Jamet',
+            foto: 'assets/mrkrab.jpg',
+            gambarHalaman: ["mrkrab.jpg", "mrkrab.jpg", "mrkrab.jpg", "mrkrab.jpg"], // Minimal 4 gambar untuk halaman baca berita
+            categories: ['Ekonomi'],
+            rating: [5, 4, 3],
+            komentar: [], // Daftar komentar dari user
+            isFavorite: false
+        },
     ];
     getBerita(): Berita[] {
         return this.dataBerita;

@@ -1,10 +1,13 @@
 import { Categories } from '../models/categories.model';
+import { DataBerita } from './dataBerita';
 import { Injectable } from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class Kategori {
+  constructor(private dataBerita: DataBerita){}
+  
   private dataKategori: Categories[] = [
     {
       nama: 'Teknologi',
@@ -26,6 +29,14 @@ export class Kategori {
     },
   ];
   getKategori(): Categories[] {
-    return this.dataKategori;
+    const berita = this.dataBerita.getBerita();
+
+    // hitung jumlah berita untuk tiap kategori
+    return this.dataKategori.map(kategori => {
+      const count = berita.filter(b =>
+        b.categories.includes(kategori.nama)
+      ).length;
+      return { ...kategori, jumlahBerita: count };
+    });
   }
 }
