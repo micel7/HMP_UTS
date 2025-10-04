@@ -29,7 +29,9 @@
     </ion-card-header>
     <ion-card-content>
       <p>{{ berita.konten | slice:0:120 }}...</p> <!-- Buat ambil 120 character aja buat ditampili di depan-->
-      <ion-note color="medium">Rating: {{ getRataRataRating(berita.rating) }}/5</ion-note>
+      <ion-note color="medium">Rating: {{ getRataRataRating(berita.rating) }}/5</ion-note> <br>
+      <ion-icon name="chatbubble-outline"></ion-icon>
+      <ion-note> {{ berita.komentar.length }} komentar</ion-note>
     </ion-card-content>
   </ion-card>
 </ion-content>

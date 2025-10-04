@@ -14,7 +14,7 @@ export class BacaberitaPage implements OnInit {
     // Properti buat nyimpen detail berita
     selectedBerita: Berita | undefined;
   constructor(private route: ActivatedRoute, // Inject ActivatedROute dipake buat baca URL
-  private dataBeritaService: DataBerita) {}
+  private beritaService: DataBerita) {}
 
   ngOnInit() {
     // Dengarkan perubahan pada parameter URL
@@ -27,9 +27,16 @@ export class BacaberitaPage implements OnInit {
         const beritaId = +beritaIdString;
 
         // panggil service untuk mendapatkan detail berita berdasarkan id 
-        this.selectedBerita = this.dataBeritaService.getBeritaById(beritaId);
+        this.selectedBerita = this.beritaService.getBeritaById(beritaId);
       }
     });
+  }
+  onToggleFavorite(berita: Berita, event: Event) {
+    // Stop event biar tidak memicu klik pada card
+    event.stopPropagation();
+    
+    // Panggil fungsi 'toggle' dari service dengan mengirim id berita
+    this.beritaService.toggleFavoriteStatus(berita.id);
   }
 
 }

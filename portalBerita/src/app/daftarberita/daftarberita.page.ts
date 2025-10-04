@@ -53,4 +53,5 @@ bacaBerita(id: number) {
     const total = rating.reduce((a, b) => a + b, 0);
     return (total / rating.length).toFixed(1) as unknown as number;
   }
+  
 }
