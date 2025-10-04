@@ -42,11 +42,15 @@ bacaBerita(id: number) {
     this.router.navigate(['/bacaberita', { id: id }]);
   }
   onToggleFavorite(berita: Berita, event: Event) {
-    // 1. Hentikan event agar tidak memicu klik pada card
+    // Stop event biar tidak memicu klik pada card
     event.stopPropagation();
     
-    // 2. Panggil fungsi 'toggle' dari service dengan mengirim id berita
+    // Panggil fungsi 'toggle' dari service dengan mengirim id berita
     this.beritaService.toggleFavoriteStatus(berita.id);
   }
-  
+  getRataRataRating(rating: number[]): number {
+    if (!rating || rating.length === 0) return 0;
+    const total = rating.reduce((a, b) => a + b, 0);
+    return (total / rating.length).toFixed(1) as unknown as number;
+  }
 }

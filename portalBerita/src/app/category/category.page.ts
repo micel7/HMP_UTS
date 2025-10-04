@@ -44,4 +44,16 @@ export class CategoryPage implements OnInit {
     const total = rating.reduce((a, b) => a + b, 0);
     return (total / rating.length).toFixed(1) as unknown as number;
   }
+  bacaBerita(id: number) {
+    // (Fungsi ini tetap sama)
+    this.router.navigate(['/bacaberita', { id: id }]);
+  }
+
+  onToggleFavorite(berita: Berita, event: Event) {
+    // Stop event biar tidak memicu klik pada card
+    event.stopPropagation();
+    
+    // Panggil fungsi 'toggle' dari service dengan mengirim id berita
+    this.beritaService.toggleFavoriteStatus(berita.id);
+  }
 }

@@ -1,16 +1,18 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
+    <ion-title>{{ selectedBerita?.judul }}</ion-title>
     <ion-buttons slot="start">
-      <ion-back-button></ion-back-button>
+      <ion-back-button defaultHref="/daftarberita"></ion-back-button>
     </ion-buttons>
-    <ion-title>bacaberita</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">bacaberita</ion-title>
-    </ion-toolbar>
-  </ion-header>
-</ion-content>
+<ion-content *ngIf="selectedBerita">
+  <ion-img [src]="selectedBerita.foto"></ion-img>
+  
+  <div class="ion-padding">
+    <h1>{{ selectedBerita.judul }}</h1>
+    <p>{{ selectedBerita.konten }}</p>
+  </div>
+  
+  </ion-content>
