@@ -1,5 +1,6 @@
 import { Berita } from '../models/berita.model';
 import { Injectable } from '@angular/core';
+import { Komentar } from '../models/komentar.model';
 
 @Injectable({
     providedIn: 'root',
@@ -70,7 +71,26 @@ export class DataBerita {
             gambarHalaman: ["assets/economy1.jpg", "assets/economy2.jpeg", "assets/economy3.jpeg", "assets/economy4.jpeg"],
             categories: ['Ekonomi'],
             rating: [4, 4, 4, 5],
-            komentar: [],
+            komentar: [
+                {
+                    id: 1,
+                    userId: 5,
+                    isi: 'Langkah yang tepat dari Bank Sentral. Stabilitas nilai tukar Rupiah memang harus jadi prioritas utama saat ini, apalagi kondisi global lagi tidak menentu.',
+                    tanggal: new Date('2025-10-02T15:00:00')
+                },
+                {
+                    id: 2,
+                    userId: 6,
+                    isi: 'Berarti bunga KPR dan cicilan lain nggak akan naik dulu ya dalam waktu dekat? Syukurlah kalau begitu.',
+                    tanggal: new Date('2025-10-03T09:20:00')
+                },
+                {
+                    id: 3,
+                    userId: 2,
+                    isi: 'Ditahan terus, kapan turunnya ya? Sektor riil butuh suku bunga yang lebih rendah biar bisa ekspansi.',
+                    tanggal: new Date('2025-10-04T18:00:00')
+                }
+            ],
             isFavorite: false
         },
         {
@@ -88,6 +108,13 @@ export class DataBerita {
     getBerita(): Berita[] {
         return this.dataBerita;
     }
+     addRating(beritaId: number, ratingValue: number) {
+        const beritaItem = this.dataBerita.find(b => b.id === beritaId);
+        if (beritaItem) {
+            // Tambahkan nilai rating baru ke dalam array
+            beritaItem.rating.push(ratingValue);
+        }
+    }
     toggleFavoriteStatus(id: number) {
         // Cari berita yang cocok dengan id yang dikirim
         const beritaItem = this.dataBerita.find(b => b.id === id); // cari berita yg cocok sm id yg dikirim
@@ -100,5 +127,23 @@ export class DataBerita {
     getBeritaById(id: number){
         //cari dan kembalikan berita yg idnya sesuai
         return this.dataBerita.find(berita => berita.id === id);
+    }
+    addComment(beritaId: number, teksKomentar: string){
+        const beritaItem = this.dataBerita.find(b=> b.id === beritaId);
+
+        if (beritaItem && teksKomentar.trim() != ''){
+            // buat id unik untuk komentar baru 
+            const newCommentId = beritaItem.komentar.length+1;
+
+            const newComment: Komentar = {
+                id: newCommentId,
+                userId: 1,
+                isi: teksKomentar,
+                tanggal: new Date()
+            };
+
+            beritaItem.komentar.unshift(newComment);
+
+        }
     }
 }

@@ -19,4 +19,61 @@
     <p style="font-size:22px">{{ selectedBerita.konten }}</p>
   </div>
   
+  <ion-list>
+    <ion-list-header>
+      <h3>Beri Rating Anda</h3>
+    </ion-list-header>
+
+    <ion-item *ngIf="ratingSubmitted" lines="none">
+      <ion-icon name="checkmark-circle" color="success" slot="start"></ion-icon>
+      <ion-label>Terima kasih atas rating Anda!</ion-label>
+    </ion-item>
+    
+    <div *ngIf="!ratingSubmitted" class="ion-padding">
+      <div class="rating-stars">
+        <ion-icon (click)="rate(1)" [name]="userRating >= 1 ? 'star' : 'star-outline'" [color]="userRating >= 1 ? 'warning' : 'medium'"></ion-icon>
+        <ion-icon (click)="rate(2)" [name]="userRating >= 2 ? 'star' : 'star-outline'" [color]="userRating >= 2 ? 'warning' : 'medium'"></ion-icon>
+        <ion-icon (click)="rate(3)" [name]="userRating >= 3 ? 'star' : 'star-outline'" [color]="userRating >= 3 ? 'warning' : 'medium'"></ion-icon>
+        <ion-icon (click)="rate(4)" [name]="userRating >= 4 ? 'star' : 'star-outline'" [color]="userRating >= 4 ? 'warning' : 'medium'"></ion-icon>
+        <ion-icon (click)="rate(5)" [name]="userRating >= 5 ? 'star' : 'star-outline'" [color]="userRating >= 5 ? 'warning' : 'medium'"></ion-icon>
+      </div>
+
+      <ion-button expand="block" (click)="submitRating()" [disabled]="userRating === 0" class="ion-margin-top">
+        Kirim Rating
+      </ion-button>
+    </div>
+  </ion-list>
+
+  <ion-list>
+    <ion-list-header>
+      <h3>Komentar ({{ selectedBerita.komentar.length }})</h3>
+    </ion-list-header>
+  
+    <ion-item>
+      <ion-textarea
+        [(ngModel)]="newCommentText"
+        placeholder="Tulis komentar Anda di sini..."
+        autoGrow="true"
+      ></ion-textarea>
+    </ion-item>
+    <ion-button 
+      expand="block" 
+      class="ion-margin"
+      (click)="submitComment()"
+      [disabled]="newCommentText.trim() === ''">
+      Kirim Komentar
+    </ion-button>
+  
+    </ion-list>
+    
+  <ion-item *ngFor="let komen of selectedBerita.komentar">
+    <ion-label class="ion-text-wrap">
+      <h2>User {{ komen.userId }}</h2> 
+      
+      <p>{{ komen.isi }}</p> 
+      
+      <p class="comment-date">{{ komen.tanggal | date:'short' }}</p> 
+    </ion-label>
+  </ion-item>
+
   </ion-content>

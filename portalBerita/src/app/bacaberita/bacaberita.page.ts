@@ -15,7 +15,9 @@ export class BacaberitaPage implements OnInit {
     selectedBerita: Berita | undefined;
   constructor(private route: ActivatedRoute, // Inject ActivatedROute dipake buat baca URL
   private beritaService: DataBerita) {}
-
+  userRating: number = 0; // buat simpen rating pilihan user (1-5)
+  ratingSubmitted: boolean = false; // buat menandai jika user sudah submit, true = udah | false = belum
+  newCommentText: string = '';
   ngOnInit() {
     // Dengarkan perubahan pada parameter URL
     this.route.paramMap.subscribe(params=> {
@@ -38,5 +40,27 @@ export class BacaberitaPage implements OnInit {
     // Panggil fungsi 'toggle' dari service dengan mengirim id berita
     this.beritaService.toggleFavoriteStatus(berita.id);
   }
+  // buat pilih bintang
+   rate(starIndex: number) {
+    // Jika belum pernah submit, user bisa mengubah ratingnya
+    if (!this.ratingSubmitted) {
+      this.userRating = starIndex;
+    }
+  }
 
+  // buat ngirim rating
+  submitRating() {
+    if (this.userRating > 0 && this.selectedBerita) {
+      this.beritaService.addRating(this.selectedBerita.id, this.userRating);
+      this.ratingSubmitted = true; // Tandai sudah submit
+    }
+  }
+
+  submitComment(){
+    if (this.newCommentText.trim() !== '' && this.selectedBerita) {
+      this.beritaService.addComment(this.selectedBerita.id, this.newCommentText);
+      // Kosongkan textarea setelah submit
+      this.newCommentText = '';
+    }
+  }
 }

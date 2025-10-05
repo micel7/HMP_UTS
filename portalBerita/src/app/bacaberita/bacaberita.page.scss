@@ -14,3 +14,10 @@ ion-card {
       font-size: 28px; // bikin ikon lebih besar
     }
   }
+
+  .rating-stars {
+    font-size: 32px; // Ukuran bintang
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+  }
