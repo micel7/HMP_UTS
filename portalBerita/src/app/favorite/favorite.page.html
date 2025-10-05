@@ -6,17 +6,6 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Berita Favorite</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
-  <app-explore-container name="Berita Favorite Anda"></app-explore-container>
-</ion-content>
-<!-- batas -->
-
 <ion-header [translucent]="true">
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
@@ -33,7 +22,7 @@
     </ion-toolbar>
   </ion-header>
 
-  <!-- Tampilkan pesan jika tidak ada berita favorit -->
+  <!-- handling jika tidak ada berita favorit -->
   <div *ngIf="favoriteBerita.length === 0" class="ion-text-center ion-padding">
     <ion-icon name="heart-dislike-outline" size="large" color="medium"></ion-icon>
     <p>Anda belum memiliki berita favorit.</p>
@@ -42,7 +31,7 @@
   <!-- Tampilkan list jika ada berita favorit -->
   <ion-list *ngIf="favoriteBerita.length > 0">
     <!-- Looping data dari favoriteBerita array -->
-    <ion-item *ngFor="let berita of favoriteBerita" (click)="goToDetail(berita.judul)" button detail="true">
+    <ion-item *ngFor="let berita of favoriteBerita" (click)="goToDetail(berita.id)" button detail="true">
       <!-- Foto Berita -->
       <ion-thumbnail slot="start">
         <img [src]="berita.foto" />

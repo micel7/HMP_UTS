@@ -20,22 +20,22 @@ export class DataBerita {
         },
         {
             id: 2,
-            judul: 'Judul 2',
-            konten: 'Lorem Ipsum Dolor SiS Jamet',
+            judul: 'Mr Krab cuci uang',
+            konten: 'Mr Krab cuci uang, Mr Krab cuci uang, Mr Krab cuci uang',
             foto: 'assets/mrkrab.jpg',
             gambarHalaman: ["mrkrab.jpg", "mrkrab.jpg", "mrkrab.jpg", "mrkrab.jpg"], // Minimal 4 gambar untuk halaman baca berita
-            categories: ['Olahraga'],
+            categories: ['Ekonomi'],
             rating: [5, 4, 3],
             komentar: [], // Daftar komentar dari user
             isFavorite: true
         },
         {
             id: 3,
-            judul: 'Judul 3',
-            konten: 'Lorem Ipsum Dolor SiS Jamet',
+            judul: 'Mr Krab mengalami kerugian di Q4',
+            konten: 'Mr Krab mengalami kerugian di Q4',
             foto: 'assets/mrkrab.jpg',
             gambarHalaman: ["mrkrab.jpg", "mrkrab.jpg", "mrkrab.jpg", "mrkrab.jpg"], // Minimal 4 gambar untuk halaman baca berita
-            categories: ['Olahraga'],
+            categories: ['Ekonomi'],
             rating: [5, 4, 3],
             komentar: [], // Daftar komentar dari user
             isFavorite: false
@@ -44,7 +44,7 @@ export class DataBerita {
             id: 4,
             judul: 'Kalah di Laga Tandang, Pelatih Elang FC Soroti Lini Pertahanan',
             konten: 'Setelah menelan kekalahan pahit 2-1 dari rivalnya, Harimau FC, pelatih kepala Elang FC, Budi Santoso, menyatakan kekecewaannya terhadap kinerja lini belakang tim. "Kami membuat dua kesalahan fatal yang seharusnya tidak terjadi di level ini. Koordinasi antar pemain belakang harus segera kami perbaiki sebelum pertandingan berikutnya," ujarnya dalam konferensi pers pasca-pertandingan.',
-            foto: 'assets/sports.jpg',
+            foto: 'assets/elangfc.png',
             gambarHalaman: ["assets/sports1.jpg", "assets/sports2.jpg", "assets/sports3.jpg", "assets/sports4.jpg"],
             categories: ['Olahraga'],
             rating: [4, 3, 4, 3],
@@ -55,7 +55,7 @@ export class DataBerita {
             id: 5,
             judul: 'Startup AI Lokal "NusantaraGPT" Raih Pendanaan Seri A',
             konten: 'Startup kecerdasan buatan asal Jakarta, NusantaraGPT, hari ini mengumumkan telah berhasil mengumpulkan pendanaan Seri A sebesar $10 juta. Pendanaan ini dipimpin oleh East Ventures dengan partisipasi dari beberapa investor lainnya. Dana segar ini rencananya akan digunakan untuk ekspansi tim riset dan pengembangan infrastruktur komputasi awan mereka.',
-            foto: 'assets/tech.jpg',
+            foto:  "assets/gpt.jpg",
             gambarHalaman: ["assets/tech1.jpg", "assets/tech2.jpg", "assets/tech3.jpg", "assets/tech4.jpg"],
             // Berita dengan multi-kategori
             categories: ['Teknologi', 'Ekonomi'], 

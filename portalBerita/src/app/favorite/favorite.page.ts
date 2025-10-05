@@ -35,8 +35,9 @@ export class FavoritePage implements OnInit {
     return average.toFixed(1);
   }
 
-  goToDetail(judul: string) {
-    this.navCtrl.navigateForward('/bacaberita/' + judul);
+  goToDetail(id: number) {
+    // this.navCtrl.navigateForward('/bacaberita/' + judul);
+    this.navCtrl.navigateForward(['/bacaberita', { id: id }]);
   }
 
 
