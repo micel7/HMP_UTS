@@ -1,17 +1,85 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>
-      Search
-    </ion-title>
+    <ion-title>Cari Berita</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
+  <!-- <ion-header collapse="condense">
     <ion-toolbar>
       <ion-title size="large">Cari Berita</ion-title>
     </ion-toolbar>
-  </ion-header>
+  </ion-header> -->
 
-  <app-explore-container name="Cari"></app-explore-container>
+  <!-- Search Bar - Twitter Style -->
+  <div class="search-container">
+    <ion-searchbar
+      [(ngModel)]="searchQuery"
+      (ionInput)="onSearchChange($event)"
+      (ionClear)="onSearchClear()"
+      placeholder="Search..."
+      animated
+      show-clear-button="focus"
+      debounce="300">
+    </ion-searchbar>
+  </div>
+
+  <!-- Hasil Pencarian -->
+  <div *ngIf="isSearching && filteredBerita.length > 0" class="search-results">
+    <div class="results-header">
+      <h3>Hasil Pencarian</h3>
+      <span class="results-count">{{ filteredBerita.length }} berita ditemukan</span>
+    </div>
+
+    <ion-list>
+      <ion-item 
+        *ngFor="let berita of filteredBerita" 
+        (click)="openBerita(berita)"
+        button
+        detail="true"
+        class="berita-item">
+        
+        <!-- Thumbnail -->
+        <ion-thumbnail slot="start">
+          <img [src]="berita.foto" [alt]="berita.judul" />
+        </ion-thumbnail>
+
+        <!-- Content -->
+        <ion-label>
+          <h2>{{ berita.judul }}</h2>
+          <p class="konten-preview">{{ berita.konten.slice(0, 80) }}...</p>
+          
+          <!-- Meta Info -->
+          <div class="meta-info">
+            <!-- Kategori -->
+            <ion-chip *ngFor="let cat of berita.categories" outline="true" size="small">
+              <ion-label>{{ cat }}</ion-label>
+            </ion-chip>
+            
+            <!-- Rating -->
+            <div class="rating">
+              <ion-icon name="star" color="warning"></ion-icon>
+              <span>{{ getAverageRating(berita.rating).toFixed(1) }}</span>
+            </div>
+          </div>
+        </ion-label>
+
+        <!-- Favorite Badge -->
+        <ion-icon 
+          *ngIf="berita.isFavorite" 
+          name="heart" 
+          color="danger" 
+          slot="end">
+        </ion-icon>
+      </ion-item>
+    </ion-list>
+  </div>
+
+  <!-- No Results -->
+  <div *ngIf="isSearching && filteredBerita.length === 0" class="no-results">
+    <ion-icon name="search-outline" color="medium"></ion-icon>
+    <h3>Tidak ada hasil</h3>
+    <p>Coba gunakan kata kunci lain</p>
+  </div>
+
 </ion-content>
