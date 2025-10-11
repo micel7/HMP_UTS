@@ -4,7 +4,9 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: '',
-    loadChildren: () => import('./home/home.module').then(m => m.HomePageModule)
+    redirectTo: 'login',
+    pathMatch: 'full',
+    // loadChildren: () => import('./home/home.module').then(m => m.HomePageModule)
   },
   {
     path: 'daftarberita/:kategori', // di sini kategori jadi placeholder untuk kategori misal daftarBerita/Olahraga
@@ -13,9 +15,14 @@ const routes: Routes = [
   {
     path: 'bacaberita',
     loadChildren: () => import('./bacaberita/bacaberita.module').then( m => m.BacaberitaPageModule)
-  },  {
+  },
+  {
     path: 'login',
     loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
+  },
+  {
+    path: 'register',
+    loadChildren: () => import('./register/register.module').then( m => m.RegisterPageModule)
   },
 
 

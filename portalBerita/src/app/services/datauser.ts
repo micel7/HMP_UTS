@@ -27,4 +27,29 @@ export class Datauser {
       password: "michelle"
     },
   ]
+
+  login(uname: string, pwd: string): User | undefined {
+    const user = this.datauser.find(
+      u => u.username === uname && u.password === pwd
+    );
+    return user;
+  }
+
+  register(newUser: User): boolean {
+    const userExists = this.datauser.some(user => user.username == newUser.username);
+
+    if (userExists) {
+      console.error('Username sudah ada, silahkan input username lain');
+      return false;
+    }
+
+    let newId = 1;
+    if (this.datauser.length > 0) {
+      newId = Math.max(...this.datauser.map(u => u.userId)) + 1;
+    }
+    newUser.userId = newId;
+
+    this.datauser.push(newUser);
+    return true;
+  }
 }

@@ -36,7 +36,6 @@ export class FavoritePage implements OnInit {
   }
 
   goToDetail(id: number) {
-    // this.navCtrl.navigateForward('/bacaberita/' + judul);
     this.navCtrl.navigateForward(['/bacaberita', { id: id }]);
   }
 
