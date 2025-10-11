@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Berita } from '../models/berita.model';
-import { DataBerita } from '../services/dataBerita';
+import { Databerita } from '../services/databerita';
 
 @Component({
   selector: 'app-bacaberita',
@@ -14,7 +14,7 @@ export class BacaberitaPage implements OnInit {
     // Properti buat nyimpen detail berita
     selectedBerita: Berita | undefined;
   constructor(private route: ActivatedRoute, // Inject ActivatedROute dipake buat baca URL
-  private beritaService: DataBerita) {}
+  private beritaService: Databerita) {}
   userRating: number = 0; // buat simpen rating pilihan user (1-5)
   ratingSubmitted: boolean = false; // buat menandai jika user sudah submit, true = udah | false = belum
   newCommentText: string = '';

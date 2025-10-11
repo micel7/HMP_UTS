@@ -1,12 +1,12 @@
   import { Categories } from '../models/categories.model';
-import { DataBerita } from './dataBerita';
+import { Databerita } from './databerita';
 import { Injectable } from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class Kategori {
-  constructor(private dataBerita: DataBerita){}
+  constructor(private dataBerita: Databerita){}
   
   private dataKategori: Categories[] = [
     {

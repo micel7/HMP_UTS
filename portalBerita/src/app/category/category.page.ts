@@ -1,6 +1,6 @@
 import { Kategori } from './../services/kategori';
 import { Categories } from '../models/categories.model';
-import { DataBerita } from '../services/dataBerita';
+import { Databerita } from '../services/databerita';
 import { Berita } from '../models/berita.model';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router'; 
@@ -19,7 +19,7 @@ export class CategoryPage implements OnInit {
 
   constructor(
     private kategoriService: Kategori,
-    private beritaService: DataBerita,
+    private beritaService: Databerita,
     private router: Router
   ) {}
 

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DataBerita } from '../services/dataBerita'; // ini ambil dari dataBerita
+import { Databerita } from '../services/databerita';
 import { Berita } from '../models/berita.model';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -15,7 +15,7 @@ export class DaftarberitaPage implements OnInit {
   daftarBerita: Berita[] = [];
   judulHalaman: string = 'Daftar Berita';
   constructor(
-    private beritaService: DataBerita,// ini harus ambil dari folder services
+    private beritaService: Databerita,// ini harus ambil dari folder services
     private router: Router,
     private route: ActivatedRoute ){ } // ini unutk baca URL) 
     

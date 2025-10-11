@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { Berita } from '../models/berita.model';
-import { DataBerita } from '../services/dataBerita';
+import { Databerita } from '../services/databerita';
 
 @Component({
   selector: 'app-favorite',
@@ -13,7 +13,7 @@ export class FavoritePage implements OnInit {
 
   favoriteBerita: Berita[] = [];
   constructor(
-    private dataService: DataBerita,
+    private dataService: Databerita,
     private navCtrl: NavController
   ) {}
   ngOnInit(): void {

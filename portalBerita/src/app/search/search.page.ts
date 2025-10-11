@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { DataBerita } from '../services/dataBerita';
+import { Databerita } from '../services/databerita';
 import { Berita } from '../models/berita.model';
 
 @Component({
@@ -17,7 +17,7 @@ export class SearchPage implements OnInit{
   isSearching: boolean = false;
 
   constructor(
-    private dataBerita: DataBerita,
+    private dataBerita: Databerita,
     private router: Router
   ) { }
 
