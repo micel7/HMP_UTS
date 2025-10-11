@@ -5,4 +5,5 @@ export interface Komentar {
   userId: number;
   isi: string; 
   tanggal: Date; 
+  replies: Komentar[]; // biar ga wajib ngisi replynya
 }

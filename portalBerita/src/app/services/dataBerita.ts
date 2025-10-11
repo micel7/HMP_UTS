@@ -81,19 +81,22 @@ export class Databerita {
           id: 1,
           userId: 5,
           isi: 'Langkah yang tepat dari Bank Sentral. Stabilitas nilai tukar Rupiah memang harus jadi prioritas utama saat ini, apalagi kondisi global lagi tidak menentu.',
-          tanggal: new Date('2025-10-02T15:00:00')
+          tanggal: new Date('2025-10-02T15:00:00'),
+          replies:[]
         },
         {
           id: 2,
           userId: 6,
           isi: 'Berarti bunga KPR dan cicilan lain nggak akan naik dulu ya dalam waktu dekat? Syukurlah kalau begitu.',
-          tanggal: new Date('2025-10-03T09:20:00')
+          tanggal: new Date('2025-10-03T09:20:00'),
+          replies:[]
         },
         {
           id: 3,
           userId: 2,
           isi: 'Ditahan terus, kapan turunnya ya? Sektor riil butuh suku bunga yang lebih rendah biar bisa ekspansi.',
-          tanggal: new Date('2025-10-04T18:00:00')
+          tanggal: new Date('2025-10-04T18:00:00'),
+          replies:[]
         }
       ],
       isFavorite: false,
@@ -135,22 +138,56 @@ export class Databerita {
     //cari dan kembalikan berita yg idnya sesuai
     return this.dataBerita.find(berita => berita.id === id);
   }
-  addComment(beritaId: number, teksKomentar: string) {
-    const beritaItem = this.dataBerita.find(b => b.id === beritaId);
+  private flattenComments(comments: Komentar[]): Komentar[] {
+    let flat: Komentar[] = [];
+    for (const comment of comments) {
+      flat.push(comment);
+      if (comment.replies && comment.replies.length > 0) {
+        // Gabungkan dengan hasil rekursif dari balasannya
+        flat = flat.concat(this.flattenComments(comment.replies));
+      }
+    }
+    return flat;
+  }
+  
+  addComment(beritaId: number, teksKomentar: string, parentId?: number) {
+    const beritaItem = this.getBeritaById(beritaId);
 
-    if (beritaItem && teksKomentar.trim() != '') {
-      // buat id unik untuk komentar baru 
-      const newCommentId = beritaItem.komentar.length + 1;
+    if (beritaItem && teksKomentar.trim() !== '') {
+      
+      // bikin id baru 
+      const allComments = this.flattenComments(beritaItem.komentar);
+      
+      // Secara eksplisit memberi tipe (c: Komentar)
+      const maxId = allComments.length > 0 ? Math.max(...allComments.map((c: Komentar) => c.id)) : 0;
+      const newCommentId = maxId + 1;
 
       const newComment: Komentar = {
         id: newCommentId,
-        userId: 1,
+        userId: 1, 
         isi: teksKomentar,
-        tanggal: new Date()
+        tanggal: new Date(),
+        replies: [] // Selalu inisialisasi array replies
       };
 
-      beritaItem.komentar.unshift(newComment);
-
+      // Selalu cek apakah ini balasan atau komentar baru
+      if (parentId) {
+        // Misal parent exist dan ini comment replies, maka
+        // Cari komentar induknya menggunakan fungsi helper
+        const parentComment = this.findCommentById(beritaItem.komentar, parentId);
+        
+        if (parentComment) { 
+          // Pengecekan semisal comment belum ada array untuk replies 
+          if (!parentComment.replies) {
+            parentComment.replies = [];
+          }
+          // Tambahkan komentar baru sebagai balasan
+          parentComment.replies.unshift(newComment);
+        }
+      } else {
+        // Kalau misal ini comment utama langsung masuk ke maina rray aja
+        beritaItem.komentar.unshift(newComment);
+      }
     }
   }
   incrementViews(id: number): void {
@@ -158,6 +195,25 @@ export class Databerita {
     if (berita) {
       berita.views++;
     }
+  }
+  private findCommentById(comments: Komentar[], id: number): Komentar | null{
+    for (const comment of comments){
+      if (comment.id === id){ // semisal commentnya coock langsung return
+        return comment;
+      }
+      // semisal tidak cocok, cek apakah komentar ini punya balasan.
+      if (comment.replies && comment.replies.length > 0) {
+        // misalnya punya, panggil fungsi ini lagi untuk mencari di dalam balasannya (rekursif).
+        const foundInReply = this.findCommentById(comment.replies, id);
+        
+        // misalnya di dalam balasan, langsung kembalikan hasilnya.
+        if (foundInReply) {
+          return foundInReply;
+        }
+      }
+      
+    }
+    return null; // semisal loop selesai dan gada hasil
   }
 
 }

@@ -21,3 +21,26 @@ ion-card {
     justify-content: center;
     gap: 8px;
   }
+
+  .reply-form {
+    padding-left: 52px; // Sejajar dengan konten komentar
+    margin-top: 8px;
+  
+    ion-textarea {
+      border: 1px solid var(--ion-color-light-shade);
+      border-radius: 8px;
+      margin-bottom: 4px;
+    }
+  }
+  
+  .reply-buttons {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  // biar menjarak ke dalam buat yg replies
+  replies-container {
+    padding-left: 52px; 
+    margin-top: 12px;
+  }
+  

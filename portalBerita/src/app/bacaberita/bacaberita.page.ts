@@ -18,6 +18,9 @@ export class BacaberitaPage implements OnInit {
   userRating: number = 0; // buat simpen rating pilihan user (1-5)
   ratingSubmitted: boolean = false; // buat menandai jika user sudah submit, true = udah | false = belum
   newCommentText: string = '';
+  replyingToCommentId: number | null = null; // Menyimpan ID komentar yang sedang dibalas
+  replyText: string = ''; // Teks untuk form balasan
+
   ngOnInit() {
     // Dengarkan perubahan pada parameter URL
     this.route.paramMap.subscribe(params=> {
@@ -61,6 +64,28 @@ export class BacaberitaPage implements OnInit {
       this.beritaService.addComment(this.selectedBerita.id, this.newCommentText);
       // Kosongkan textarea setelah submit
       this.newCommentText = '';
+    }
+  }
+
+  toggleReplyForm(commentId: number) {
+    if (this.replyingToCommentId === commentId) {
+      // Jika form untuk komentar ini sudah terbuka, tutup formnya.
+      this.replyingToCommentId = null;
+    } else {
+      // Jika belum, buka form balasan untuk komentar ini.
+      this.replyingToCommentId = commentId;
+      this.replyText = ''; // Kosongkan input field
+    }
+  }
+
+  submitReply(parentId: number) {
+    if (this.selectedBerita && this.replyText.trim() !== '') {
+      // Panggil service addComment dengan menyertakan parentId
+      this.beritaService.addComment(this.selectedBerita.id, this.replyText, parentId);
+      
+      // Reset dan tutup form balasan setelah berhasil dikirim
+      this.replyingToCommentId = null;
+      this.replyText = '';
     }
   }
 }

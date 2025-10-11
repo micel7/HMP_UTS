@@ -65,15 +65,43 @@
     </ion-button>
   
     </ion-list>
+
+    <!-- Buat reply comment -->
+    <div *ngFor="let komen of selectedBerita.komentar" class="comment-thread">
+      <ion-item>
+        <ion-label class="ion-text-wrap">
+        <h2>User {{komen.userId}}</h2>
+        <p>{{komen.isi}}</p>
+        <div class="comment-footer">
+          <p class="comment-date"> {{ komen.tanggal | date:'short' }}</p>
+          <ion-button fill="clear" size="small" (click)="toggleReplyForm(komen.id)">Balas</ion-button>
+        </div>
+      </ion-label>
+      </ion-item>
+
+    <div *ngIf="replyingToCommentId === komen.id" class="reply-form">
+      <ion-item>
+        <ion-textarea [(ngModel)]="replyText" placeholder="Tulis balasan..." autoGrow="true"></ion-textarea>
+      </ion-item>
+      <div class="reply-buttons">
+        <ion-button size="small" (click)="submitReply(komen.id)">Kirim</ion-button>
+        <ion-button fill="clear" size="small" (click)="toggleReplyForm(komen.id)">Batal</ion-button>
+      </div>
+    </div>
+
+    <div *ngIf="komen.replies && komen.replies.length > 0" class="replies-container"> 
+      <!-- Loop ini buat menampilkan setiap balasan -->
+      <ion-item *ngFor="let reply of komen.replies">
+        <ion-label class="ion-text-wrap">
+          <h2>User {{ reply.userId }}</h2>
+          <p>{{ reply.isi }}</p>
+          <div class="comment-footer">
+            <p class="comment-date">{{ reply.tanggal | date:'short' }}</p>
+          </div>
+        </ion-label>
+      </ion-item>
+    </div>
+  </div>
     
-  <ion-item *ngFor="let komen of selectedBerita.komentar">
-    <ion-label class="ion-text-wrap">
-      <h2>User {{ komen.userId }}</h2> 
-      
-      <p>{{ komen.isi }}</p> 
-      
-      <p class="comment-date">{{ komen.tanggal | date:'short' }}</p> 
-    </ion-label>
-  </ion-item>
 
   </ion-content>
