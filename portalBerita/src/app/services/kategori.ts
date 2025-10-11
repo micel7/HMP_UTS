@@ -1,4 +1,4 @@
-import { Categories } from '../models/categories.model';
+  import { Categories } from '../models/categories.model';
 import { DataBerita } from './dataBerita';
 import { Injectable } from '@angular/core';
 

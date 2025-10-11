@@ -13,7 +13,12 @@ const routes: Routes = [
   {
     path: 'bacaberita',
     loadChildren: () => import('./bacaberita/bacaberita.module').then( m => m.BacaberitaPageModule)
-  }
+  },  {
+    path: 'login',
+    loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
+  },
+
+
 
 ];
 @NgModule({
