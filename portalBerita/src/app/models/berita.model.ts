@@ -10,4 +10,5 @@ export interface Berita {
   rating: number[];
   komentar: Komentar[]; // Daftar komentar dari user
   isFavorite: boolean;
+  views: number;
 }

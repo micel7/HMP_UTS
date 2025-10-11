@@ -16,7 +16,8 @@ export class DataBerita {
             categories: ['Olahraga'],
             rating: [5, 4, 3],
             komentar: [], // Daftar komentar dari user
-            isFavorite: true
+            isFavorite: true,
+            views: 0
         },
         {
             id: 2,
@@ -27,7 +28,8 @@ export class DataBerita {
             categories: ['Ekonomi'],
             rating: [5, 4, 3],
             komentar: [], // Daftar komentar dari user
-            isFavorite: true
+            isFavorite: true,
+            views: 0
         },
         {
             id: 3,
@@ -38,7 +40,8 @@ export class DataBerita {
             categories: ['Ekonomi'],
             rating: [5, 4, 3],
             komentar: [], // Daftar komentar dari user
-            isFavorite: false
+            isFavorite: false,
+            views: 0
         },
         {
             id: 4,
@@ -49,7 +52,8 @@ export class DataBerita {
             categories: ['Olahraga'],
             rating: [4, 3, 4, 3],
             komentar: [],
-            isFavorite: false
+            isFavorite: false,
+            views: 0
         },
         {
             id: 5,
@@ -61,7 +65,8 @@ export class DataBerita {
             categories: ['Teknologi', 'Ekonomi'], 
             rating: [5, 5, 4, 5],
             komentar: [],
-            isFavorite: true
+            isFavorite: true,
+            views: 0
         },
         {
             id: 6,
@@ -91,7 +96,8 @@ export class DataBerita {
                     tanggal: new Date('2025-10-04T18:00:00')
                 }
             ],
-            isFavorite: false
+            isFavorite: false,
+            views: 0
         },
         {
             id: 7,
@@ -102,7 +108,8 @@ export class DataBerita {
             categories: ['Kesehatan'],
             rating: [5, 5, 5],
             komentar: [],
-            isFavorite: false
+            isFavorite: false,
+            views: 0
         },
     ];
     getBerita(): Berita[] {
@@ -146,4 +153,10 @@ export class DataBerita {
 
         }
     }
+    incrementViews(id:number):void{
+        const berita = this.dataBerita.find(b=> b.id === id);
+        if (berita){
+            berita.views++;
+    }
+}
 }

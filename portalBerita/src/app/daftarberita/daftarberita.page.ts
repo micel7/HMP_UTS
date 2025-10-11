@@ -37,9 +37,10 @@ export class DaftarberitaPage implements OnInit {
       }   
   });
 }
-bacaBerita(id: number) {
+  bacaBerita(id: number) {
     // (Fungsi ini tetap sama)
     this.router.navigate(['/bacaberita', { id: id }]);
+    this.beritaService.incrementViews(id);
   }
   onToggleFavorite(berita: Berita, event: Event) {
     // Stop event biar tidak memicu klik pada card
@@ -53,5 +54,14 @@ bacaBerita(id: number) {
     const total = rating.reduce((a, b) => a + b, 0);
     return (total / rating.length).toFixed(1) as unknown as number;
   }
+  
+  chunkArray(arr: any[], chunkSize: number): any[][] {
+    const result = [];
+    for (let i = 0; i < arr.length; i += chunkSize) {
+      result.push(arr.slice(i, i + chunkSize));
+    }
+    return result;
+  }
+  
   
 }
