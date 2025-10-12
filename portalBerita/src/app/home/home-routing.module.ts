@@ -4,7 +4,7 @@ import { HomePage } from './home.page';
 
 const routes: Routes = [
   {
-    path: 'home',
+    path: '',
     component: HomePage,
     children: [
       {
@@ -24,19 +24,15 @@ const routes: Routes = [
       },
       {
         path: '',
-        redirectTo: '/home/category',
+        redirectTo: 'category',
         pathMatch: 'full',
       },
     ],
-  },
-  {
-    path: '',
-    redirectTo: '/home/category',
-    pathMatch: 'full',
   },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule]
 })
 export class HomePageRoutingModule {}

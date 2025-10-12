@@ -34,9 +34,14 @@ export class LoginPage implements OnInit {
     try {
       const user = this.datauser.login(this.unameInput, this.pwdInput);
 
-      await this.showAlert('Sukses', 'Anda berhasil login.');
-
-      this.navCtrl.navigateRoot('/home');
+      if (user) {
+        await this.showAlert('Sukses', 'Anda berhasil login.');
+        
+        this.navCtrl.navigateRoot('/home');
+        
+      } else {
+        await this.showAlert('Gagal', 'Username atau password salah.');
+      }
 
     } catch (error: any) {
       await this.showAlert('Gagal', error.message || 'Username atau password salah.');

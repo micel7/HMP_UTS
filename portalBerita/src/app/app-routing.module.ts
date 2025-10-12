@@ -9,8 +9,8 @@ const routes: Routes = [
     // loadChildren: () => import('./home/home.module').then(m => m.HomePageModule)
   },
   {
-    path: 'home', // di sini kategori jadi placeholder untuk kategori misal daftarBerita/Olahraga
-    loadChildren: () => import('./category/category.module').then( m => m.CategoryPageModule)
+    path: 'home', 
+    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
   },
   {
     path: 'daftarberita/:kategori', // di sini kategori jadi placeholder untuk kategori misal daftarBerita/Olahraga
