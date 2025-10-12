@@ -27,6 +27,12 @@ export class Kategori {
       color: 'warning',
       jumlahBerita: 4,
     },
+    {
+      nama: 'Game',
+      icon: 'game-controller-outline',
+      color: 'tertiary',
+      jumlahBerita: 4,
+    },
   ];
   getKategori(): Categories[] {
     const berita = this.dataBerita.getBerita();
