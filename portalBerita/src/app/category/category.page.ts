@@ -1,9 +1,9 @@
 import { Kategori } from './../services/kategori';
 import { Categories } from '../models/categories.model';
-import { Databerita } from '../services/databerita';
+import { Databerita } from '../services/dataBerita';
 import { Berita } from '../models/berita.model';
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router'; 
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-category',
@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
 })
 export class CategoryPage implements OnInit {
   index = 0;
-  jenistampilan="forYou"
+  jenistampilan = 'forYou';
   daftarKategori: Categories[] = [];
   daftarBerita: Berita[] = [];
 
@@ -52,7 +52,7 @@ export class CategoryPage implements OnInit {
   onToggleFavorite(berita: Berita, event: Event) {
     // Stop event biar tidak memicu klik pada card
     event.stopPropagation();
-    
+
     // Panggil fungsi 'toggle' dari service dengan mengirim id berita
     this.beritaService.toggleFavoriteStatus(berita.id);
   }

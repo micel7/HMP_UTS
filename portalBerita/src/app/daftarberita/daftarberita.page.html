@@ -18,12 +18,13 @@
     <ion-card *ngFor="let berita of daftarBerita" class="news-card"  (click)="bacaBerita(berita.id)">
 
         <!-- GAMBAR, JUDUL, BINTANG FAVORIT -->
-        <div class="card-header-container">
+      <div class="card-header-container">
           <!-- Wadah buat naruh gambar di kiri -->
           <ion-thumbnail class="news-thumbnail">
             <ion-img [src]="berita.foto" alt="Foto untuk {{ berita.judul }}"></ion-img>
           </ion-thumbnail>
         
+          
 
         <div class="text-content" >
           <ion-card-title class="news-title">{{berita.judul}}</ion-card-title>

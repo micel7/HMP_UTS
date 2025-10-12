@@ -28,11 +28,29 @@ export class Datauser {
     },
   ]
 
+  public loggedInUser: User | null = null;
+
+  constructor() { 
+    const savedUser = localStorage.getItem('loggedInUser');
+    if (savedUser) {
+      this.loggedInUser = JSON.parse(savedUser);
+    }
+  }
+
   login(uname: string, pwd: string): User | undefined {
     const user = this.datauser.find(
       u => u.username === uname && u.password === pwd
     );
+    if(user) {
+      this.loggedInUser = user;
+      localStorage.setItem('loggedInUser', JSON.stringify(user));
+    }
     return user;
+  }
+  
+  logout(){
+    localStorage.removeItem('loggedInUser');
+    this.loggedInUser = null;
   }
 
   register(newUser: User): boolean {

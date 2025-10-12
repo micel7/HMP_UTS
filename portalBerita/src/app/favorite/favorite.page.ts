@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { Berita } from '../models/berita.model';
-import { Databerita } from '../services/databerita';
+import { Databerita } from '../services/dataBerita';
 
 @Component({
   selector: 'app-favorite',
@@ -10,20 +10,20 @@ import { Databerita } from '../services/databerita';
   standalone: false,
 })
 export class FavoritePage implements OnInit {
-
   favoriteBerita: Berita[] = [];
   constructor(
     private dataService: Databerita,
     private navCtrl: NavController
   ) {}
   ngOnInit(): void {
-    this.loadFavBerita()
+    this.loadFavBerita();
   }
-
 
   loadFavBerita() {
     const semuaBerita = this.dataService.getBerita();
-    this.favoriteBerita = semuaBerita.filter((berita: Berita) => berita.isFavorite);
+    this.favoriteBerita = semuaBerita.filter(
+      (berita: Berita) => berita.isFavorite
+    );
   }
 
   getAverageRating(berita: Berita): string {
@@ -38,6 +38,4 @@ export class FavoritePage implements OnInit {
   goToDetail(id: number) {
     this.navCtrl.navigateForward(['/bacaberita', { id: id }]);
   }
-
-
 }

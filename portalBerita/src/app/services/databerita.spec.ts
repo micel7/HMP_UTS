@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { Databerita } from './databerita';
+import { Databerita } from './dataBerita';
 
 describe('Databerita', () => {
   let service: Databerita;
