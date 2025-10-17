@@ -19,23 +19,22 @@ export class DaftarberitaPage implements OnInit {
   ) {} // ini unutk baca URL)
 
   ngOnInit() {
-    // Listen to perubahan parameter yg ad di URL
-    this.route.paramMap.subscribe((params) => {
-      const kategoriTerpilih = params.get('kategori'); // Ambil nilai dari parameter 'kategori' yang kita definisikan di routing
-      if (kategoriTerpilih) {
-        // Misal ada kategori yg dipilih
-        this.judulHalaman = `Kategori: ${kategoriTerpilih}`; // harus pake backtick ygy biar kebaca kategorinya
-        const semuaBerita = this.beritaService.getBerita();
+    const semuaBerita = this.beritaService.getBerita();
+      
+    // Cek parameter di URL
+    const kategoriTerpilih = this.route.snapshot.paramMap.get('kategori');
 
-        // Filter semua berita biar dpt yg cocok sm kategori
-        this.daftarBerita = semuaBerita.filter((berita) =>
-          berita.categories.includes(kategoriTerpilih)
-        );
-
-        console.log('Kategori Dipilih:', kategoriTerpilih);
-        console.log('Berita yang difilter:', this.daftarBerita);
-      }
-    });
+    if (kategoriTerpilih) {
+      // Misal ada kategori jadi difilter
+      this.judulHalaman = `Kategori: ${kategoriTerpilih}`;
+      this.daftarBerita = semuaBerita.filter(berita =>
+        berita.categories.includes(kategoriTerpilih)
+      );
+    } else {
+      // Kalo gaada tampilin semua
+      this.judulHalaman = 'Semua Berita';
+      this.daftarBerita = semuaBerita;
+    }
   }
   bacaBerita(id: number) {
     // (Fungsi ini tetap sama)

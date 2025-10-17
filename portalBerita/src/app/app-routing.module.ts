@@ -13,6 +13,11 @@ const routes: Routes = [
     loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
   },
   {
+    // Rute untuk menampilkan SEMUA berita (tanpa kategori)
+    path: 'daftarberita',
+    loadChildren: () => import('./daftarberita/daftarberita.module').then(m => m.DaftarberitaPageModule)
+  },
+  {
     path: 'daftarberita/:kategori', // di sini kategori jadi placeholder untuk kategori misal daftarBerita/Olahraga
     loadChildren: () => import('./daftarberita/daftarberita.module').then( m => m.DaftarberitaPageModule)
   },
