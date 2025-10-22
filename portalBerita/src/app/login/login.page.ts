@@ -32,9 +32,9 @@ export class LoginPage implements OnInit {
 
   async handleLogin() {
     try {
-      const user = this.datauser.login(this.unameInput, this.pwdInput);
+      const isLoginTrue = this.datauser.login(this.unameInput, this.pwdInput);
 
-      if (user) {
+      if (isLoginTrue) {
         await this.showAlert('Sukses', 'Anda berhasil login.');
         
         this.navCtrl.navigateRoot('/home');
