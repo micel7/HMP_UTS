@@ -19,6 +19,10 @@ export class FavoritePage implements OnInit {
     this.loadFavBerita();
   }
 
+  ionViewWillEnter() { //untuk memastikan berita favorit terupdate
+    this.loadFavBerita();
+  }
+
   loadFavBerita() {
     const semuaBerita = this.dataService.getBerita();
     this.favoriteBerita = semuaBerita.filter( //untuk filtering yang hanya isFavorit=true saja
