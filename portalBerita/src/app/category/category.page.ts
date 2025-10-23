@@ -21,7 +21,7 @@ export class CategoryPage implements OnInit {
     private kategoriService: Kategori,
     private beritaService: Databerita,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.loadKategori();
@@ -40,9 +40,15 @@ export class CategoryPage implements OnInit {
   }
 
   getRataRataRating(rating: number[]): number {
-    if (!rating || rating.length === 0) return 0;
-    const total = rating.reduce((a, b) => a + b, 0);
-    return (total / rating.length).toFixed(1) as unknown as number;
+    if (!rating || rating.length === 0) return 0; //kalau tidak ada rating return 0
+    //kalau ada rating ditotalkan dulu lalu dibagi sesuai jumlah rating
+    let total = 0;
+    for (let i = 0; i < rating.length; i++) {
+      total += rating[i];
+    }
+    let avg = total / rating.length
+    let avgRounded = parseFloat(avg.toFixed(1)) //parseFloat untuk mengubah ke float karena toFixed(1) membulatkan 1 decimal tetapi berupa string 
+    return avgRounded;
   }
   bacaBerita(id: number) {
     // (Fungsi ini tetap sama)

@@ -66,9 +66,15 @@ export class SearchPage implements OnInit {
   }
 
   // Fungsi hitung rata-rata rating
-  getAverageRating(ratings: number[]): number {
-    if (ratings.length === 0) return 0;
-    const sum = ratings.reduce((a, b) => a + b, 0);
-    return sum / ratings.length;
+  getRataRataRating(rating: number[]): number {
+    if (!rating || rating.length === 0) return 0; //kalau tidak ada rating return 0
+    //kalau ada rating ditotalkan dulu lalu dibagi sesuai jumlah rating
+    let total = 0;
+    for (let i = 0; i < rating.length; i++) {
+      total += rating[i];
+    }
+    let avg = total/rating.length
+    let avgRounded = parseFloat(avg.toFixed(1)) //parseFloat untuk mengubah ke float karena toFixed(1) membulatkan 1 decimal tetapi berupa string 
+    return avgRounded;
   }
 }

@@ -32,6 +32,6 @@ export class FavoritePage implements OnInit {
 
   goBacaBerita(id: number) {
     this.dataService.incrementViews(id);
-    this.navCtrl.navigateForward(['/bacaberita', { id: id }]);
+    this.navCtrl.navigateForward(['/bacaberita', { id: id }]); //navigate forward sama seperti router fungsinya, ke halaman selanjutnya
   }
 }
