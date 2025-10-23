@@ -31,13 +31,31 @@ export class Datauser {
   public loggedInUser: User | null = null;
 
   constructor() { 
+    const savedUsername = localStorage.getItem('UserTerakhir');
+
+    //cek username tersimpan
+    if (savedUsername) {
+      //filtering apakah benar
+      const foundUser = this.datauser.find(u => u.username === savedUsername);
+
+      //kalau ketemu set logged in user
+      if (foundUser) {
+        this.loggedInUser = foundUser;
+      }
+    }
   }
+
+  simpanData(uname: string){
+    localStorage.setItem('UserTerakhir', uname)
+  } //untuk simpan data seperti di session
 
   login(uname: string, pwd: string): User | boolean {
     const user = this.datauser.find(
       u => u.username === uname && u.password === pwd
     );
     if(user) {
+      this.loggedInUser=user; //untuk keperluan melempar username ke component.ts
+      this.simpanData(uname);
       return true;
     }
     return false;
