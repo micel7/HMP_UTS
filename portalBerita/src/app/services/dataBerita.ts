@@ -20,7 +20,7 @@ export class Databerita {
       rating: [5, 4, 3],
       komentar: [], // Daftar komentar dari user
       isFavorite: true,
-      views: 0
+      views: 104
     },
     {
       id: 2,
@@ -32,7 +32,7 @@ export class Databerita {
       rating: [5, 4, 3],
       komentar: [], // Daftar komentar dari user
       isFavorite: true,
-      views: 0
+      views: 25
     },
     {
       id: 3,
@@ -44,7 +44,7 @@ export class Databerita {
       rating: [5, 4, 3],
       komentar: [], // Daftar komentar dari user
       isFavorite: false,
-      views: 0
+      views: 50
     },
     {
       id: 4,
@@ -56,7 +56,7 @@ export class Databerita {
       rating: [4, 3, 4, 3],
       komentar: [],
       isFavorite: false,
-      views: 0
+      views: 100
     },
     {
       id: 5,
@@ -69,7 +69,7 @@ export class Databerita {
       rating: [5, 5, 4, 5],
       komentar: [],
       isFavorite: true,
-      views: 0
+      views: 47
     },
     {
       id: 6,
@@ -106,7 +106,7 @@ export class Databerita {
         }
       ],
       isFavorite: false,
-      views: 0
+      views: 64
     },
     {
       id: 7,
@@ -118,7 +118,7 @@ export class Databerita {
       rating: [5, 5, 5],
       komentar: [],
       isFavorite: false,
-      views: 0
+      views: 78
     },
     {
       id: 8,
@@ -130,7 +130,7 @@ export class Databerita {
       rating: [5, 5, 5],
       komentar: [],
       isFavorite: true,
-      views: 0
+      views: 96
     },
     {
       id: 9,
@@ -142,7 +142,7 @@ export class Databerita {
       rating: [5, 2, 5],
       komentar: [],
       isFavorite: false,
-      views: 0
+      views: 57
     },
   ];
   getBerita(): Berita[] {
