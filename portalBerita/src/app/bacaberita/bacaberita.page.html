@@ -10,8 +10,8 @@
 <ion-content *ngIf="selectedBerita">
   <ion-img [src]="selectedBerita.foto"></ion-img>
   <div class="favorite-icon" (click)="onToggleFavorite(selectedBerita, $event)">
-    <ion-icon name="star" color="warning" *ngIf="selectedBerita.isFavorite"></ion-icon>
-    <ion-icon name="star-outline" color="medium" *ngIf="!selectedBerita.isFavorite"></ion-icon>
+    <ion-icon name="heart" color="danger" *ngIf="selectedBerita.isFavorite"></ion-icon>
+    <ion-icon name="heart-outline" color="medium" *ngIf="!selectedBerita.isFavorite"></ion-icon>
   </div>
   
   <div class="ion-padding">
