@@ -29,9 +29,9 @@ export class RegisterPage implements OnInit {
       return;
     }
 
-    // Buat objek user baru dari input
+    // buat objek user baru dari input
     const newUser: User = {
-      userId: 0, // ID akan di-generate oleh service
+      userId: 0, // ID nanti akan dibuat oleh service
       username: this.usernameInput,
       password: this.passwordInput,
     };
@@ -40,7 +40,7 @@ export class RegisterPage implements OnInit {
 
     if (success) {
       await this.showAlert('Sukses', 'Akun baru berhasil dibuat. Silakan login.');
-      this.navCtrl.navigateBack('/login'); // Kembali ke halaman login
+      this.navCtrl.navigateBack('/login');
     } else {
       await this.showAlert('Gagal', 'Username sudah digunakan oleh orang lain.');
     }

@@ -22,16 +22,14 @@
     <p>Anda belum memiliki berita favorit.</p>
   </div>
 
-  <!-- Tampilkan list jika ada berita favorit -->
+  <!-- jika ada berita favorit jalankan looping -->
   <ion-list *ngIf="favoriteBerita.length > 0">
-    <!-- Looping data dari favoriteBerita array -->
-    <ion-item *ngFor="let berita of favoriteBerita" (click)="goToDetail(berita.id)" button detail="true">
-      <!-- Foto Berita -->
+    <!-- looping data dari favoriteBerita array, jika diclick akan ke baca berita -->
+    <ion-item *ngFor="let berita of favoriteBerita" (click)="goBacaBerita(berita.id)" button detail="true">
       <ion-thumbnail slot="start">
         <img [src]="berita.foto" />
       </ion-thumbnail>
       
-      <!-- Judul dan Rating -->
       <ion-label>
         <h2>{{ berita.judul }}</h2>
       </ion-label>

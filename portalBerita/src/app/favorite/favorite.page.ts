@@ -14,28 +14,23 @@ export class FavoritePage implements OnInit {
   constructor(
     private dataService: Databerita,
     private navCtrl: NavController
-  ) {}
+  ) { }
   ngOnInit(): void {
+    this.loadFavBerita();
+  }
+
+  ionViewWillEnter() { //untuk memastikan berita favorit terupdate
     this.loadFavBerita();
   }
 
   loadFavBerita() {
     const semuaBerita = this.dataService.getBerita();
-    this.favoriteBerita = semuaBerita.filter(
+    this.favoriteBerita = semuaBerita.filter( //untuk filtering yang hanya isFavorit=true saja
       (berita: Berita) => berita.isFavorite
     );
   }
 
-  getAverageRating(berita: Berita): string {
-    if (!berita.rating || berita.rating.length === 0) {
-      return 'N/A';
-    }
-    const sum = berita.rating.reduce((a, b) => a + b, 0);
-    const average = sum / berita.rating.length;
-    return average.toFixed(1);
-  }
-
-  goToDetail(id: number) {
+  goBacaBerita(id: number) {
     this.navCtrl.navigateForward(['/bacaberita', { id: id }]);
   }
 }

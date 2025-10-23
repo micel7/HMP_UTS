@@ -31,21 +31,16 @@ export class Datauser {
   public loggedInUser: User | null = null;
 
   constructor() { 
-    const savedUser = localStorage.getItem('loggedInUser');
-    if (savedUser) {
-      this.loggedInUser = JSON.parse(savedUser);
-    }
   }
 
-  login(uname: string, pwd: string): User | undefined {
+  login(uname: string, pwd: string): User | boolean {
     const user = this.datauser.find(
       u => u.username === uname && u.password === pwd
     );
     if(user) {
-      this.loggedInUser = user;
-      localStorage.setItem('loggedInUser', JSON.stringify(user));
+      return true;
     }
-    return user;
+    return false;
   }
   
   logout(){

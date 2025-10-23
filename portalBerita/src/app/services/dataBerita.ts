@@ -12,7 +12,7 @@ export class Databerita {
       judul: 'MU kalah lagi ',
       konten: 'MU kalah lagi',
       foto: 'assets/MU.jpg',
-      gambarHalaman: ["mrkrab.jpg", "mrkrab.jpg", "mrkrab.jpg", "mrkrab.jpg"], // Minimal 4 gambar untuk halaman baca berita
+      gambarHalaman: ["assets/sports1.jpg", "assets/sports2.jpg", "assets/sports3.jpg", "assets/sports4.jpg"], // Minimal 4 gambar untuk halaman baca berita
       categories: ['Olahraga'],
       rating: [5, 4, 3],
       komentar: [], // Daftar komentar dari user
@@ -24,7 +24,7 @@ export class Databerita {
       judul: 'Mr Krab cuci uang',
       konten: 'Mr Krab cuci uang, Mr Krab cuci uang, Mr Krab cuci uang',
       foto: 'assets/mrkrab.jpg',
-      gambarHalaman: ["mrkrab.jpg", "mrkrab.jpg", "mrkrab.jpg", "mrkrab.jpg"], // Minimal 4 gambar untuk halaman baca berita
+      gambarHalaman: ["assets/mrkrab.jpg", "assets/mrkrab.jpg", "assets/mrkrab.jpg", "assets/mrkrab.jpg"], // Minimal 4 gambar untuk halaman baca berita
       categories: ['Ekonomi'],
       rating: [5, 4, 3],
       komentar: [], // Daftar komentar dari user
@@ -36,7 +36,7 @@ export class Databerita {
       judul: 'Mr Krab mengalami kerugian di Q4',
       konten: 'Mr Krab mengalami kerugian di Q4',
       foto: 'assets/mrkrab.jpg',
-      gambarHalaman: ["mrkrab.jpg", "mrkrab.jpg", "mrkrab.jpg", "mrkrab.jpg"], // Minimal 4 gambar untuk halaman baca berita
+      gambarHalaman: ["assets/mrkrab.jpg", "assets/mrkrab.jpg", "assets/mrkrab.jpg", "assets/mrkrab.jpg"], // Minimal 4 gambar untuk halaman baca berita
       categories: ['Ekonomi'],
       rating: [5, 4, 3],
       komentar: [], // Daftar komentar dari user
@@ -107,7 +107,7 @@ export class Databerita {
       judul: 'Tips Menjaga Kesehatan Mata di Era Digital',
       konten: 'Bekerja di depan layar selama berjam-jam dapat menyebabkan ketegangan pada mata. Para ahli kesehatan menyarankan untuk menerapkan aturan 20-20-20: setiap 20 menit, alihkan pandangan Anda untuk melihat sesuatu yang berjarak 20 kaki (sekitar 6 meter) selama 20 detik. Selain itu, pastikan pencahayaan ruangan cukup dan posisi layar sejajar dengan mata.',
       foto: 'assets/health.jpg',
-      gambarHalaman: ["assets/health1.jpeg", "assets/health2.jpeg", "assets/health3.jpeg", "assets/health4.jpeg"],
+      gambarHalaman: ["assets/health1.jpeg", "assets/health2.jpeg", "assets/health3.jpeg", "assets/health4.jpg"],
       categories: ['Kesehatan'],
       rating: [5, 5, 5],
       komentar: [],
@@ -131,7 +131,7 @@ export class Databerita {
       judul: 'Blue Protocol: Star Resonance Resmi Dirilis Global, Hadir di PC dan Mobile',
       konten: 'Setelah penantian panjang, Blue Protocol: Star Resonance akhirnya resmi dirilis secara global pada Kamis (9/10/25) di platform PC (Steam dan Epic Games Store) serta mobile (iOS dan Android). Game MMORPG bergaya anime ini juga dipastikan akan menghadirkan fitur cross-play dan cross-progression penuh.',
       foto: 'assets/bluep.png',
-      gambarHalaman: ["assets/bluep1.png", "assets/bluep2.png"],
+      gambarHalaman: ["assets/bluep1.png", "assets/bluep.png"],
       categories: ['Game'],
       rating: [5, 2, 5],
       komentar: [],

@@ -16,14 +16,15 @@
       <ion-input label="Username" label-placement="floating" [(ngModel)]="unameInput"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-input label="Password" type="password" label-placement="floating" [(ngModel)]="pwdInput"></ion-input>
+      <!-- type=password untuk hide pwd seperti biasa -->
+      <ion-input label="Password" type="password" label-placement="floating" [(ngModel)]="pwdInput"></ion-input> 
     </ion-item>
   </ion-list>
 
   <ion-button expand="block" (click)="handleLogin()" class="ion-margin-top" id="btnLogin">
     Login
   </ion-button>
-
+<!-- expand="block" gunanya untuk meng-expand dari ujung kiri ke kanan, fill="clear" supaya bg transparan -->
   <ion-button expand="block" fill="clear" (click)="goToRegister()">
     Belum punya akun? Register
   </ion-button>
