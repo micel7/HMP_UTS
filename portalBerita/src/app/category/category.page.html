@@ -25,19 +25,29 @@
           <ion-icon name="heart" color="danger" *ngIf="berita.isFavorite"></ion-icon>
           <ion-icon name="heart-outline" color="medium" *ngIf="!berita.isFavorite"></ion-icon>
         </div>
+
         <ion-card-header>
           <ion-card-title>{{ berita.judul }}</ion-card-title>
           <ion-card-subtitle>{{ berita.categories }}</ion-card-subtitle>
         </ion-card-header>
-        <ion-card-content>
+
+        <ion-card>
           <p>{{ berita.konten | slice:0:120 }}...</p>
+
           <ion-icon name="star" color="warning"></ion-icon>
           <ion-note>{{getRataRataRating(berita.rating)}} / 5</ion-note>
+
           <div class="views-container">
             <ion-icon name="eye-outline" color="medium"></ion-icon>
             <ion-note>{{ berita.views || 0 }} views</ion-note>
           </div>
-        </ion-card-content>
+
+          <div class="comments">
+            <ion-icon name="chatbubble-outline"></ion-icon>
+            <ion-note>{{ berita.komentar.length}} komentar</ion-note>
+          </div>
+        </ion-card>
+
       </ion-card>
     </ion-list>
   </div>
