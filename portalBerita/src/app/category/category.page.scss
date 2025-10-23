@@ -92,9 +92,10 @@ ion-list{
 .rate {
   margin-top: 12px;
   display: flex;
-  justify-content: space-between; // Mendorong rating ke kiri dan komentar ke kanan
+  //justify-content: space-between; // Mendorong rating ke kiri dan komentar ke kanan
   align-items: center;
   font-size: 0.8rem;
+  gap: 5px;
 }
 
 .comments {
