@@ -96,4 +96,6 @@ export class BacaberitaPage implements OnInit {
       this.replyText = '';
     }
   }
+
+
 }
