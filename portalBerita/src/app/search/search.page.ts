@@ -61,6 +61,7 @@ export class SearchPage implements OnInit {
 
   openBerita(berita: Berita) {
     // Navigate ke detail berita
+    this.dataBerita.incrementViews(berita.id);
     this.router.navigate(['/bacaberita', { id: berita.id }]);
   }
 

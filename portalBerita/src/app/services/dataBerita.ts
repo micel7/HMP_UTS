@@ -126,7 +126,7 @@ export class Databerita {
       konten: 'Silent Hill f langsung melesat baik secara kritis maupun komersial, sebagaimana terlihat dari skor Metacritic serta laporan penjualan terbaru yang dirilis Konami. Dikembangkan oleh NeoBards Entertainment, game horor ini berhasil menghadirkan kembali esensi klasik waralaba dengan menangkap horor psikologis yang menjadi ciri khas Silent Hill.',
       foto: 'assets/game.png',
       gambarHalaman: ["assets/game1.png", "assets/game2.png", "assets/game3.png", "assets/game4.png"],
-      categories: ['Game'],
+      categories: ['Game', 'Teknologi'],
       rating: [5, 5, 5],
       komentar: [],
       isFavorite: true,
@@ -138,7 +138,7 @@ export class Databerita {
       konten: 'Setelah penantian panjang, Blue Protocol: Star Resonance akhirnya resmi dirilis secara global pada Kamis (9/10/25) di platform PC (Steam dan Epic Games Store) serta mobile (iOS dan Android). Game MMORPG bergaya anime ini juga dipastikan akan menghadirkan fitur cross-play dan cross-progression penuh.',
       foto: 'assets/bluep.png',
       gambarHalaman: ["assets/bluep1.png", "assets/bluep.png"],
-      categories: ['Game'],
+      categories: ['Game', 'Teknologi'],
       rating: [5, 2, 5],
       komentar: [],
       isFavorite: false,
@@ -225,9 +225,9 @@ export class Databerita {
     }
   }
   incrementViews(id: number): void {
-    const berita = this.dataBerita.find(b => b.id === id);
-    if (berita) {
-      berita.views++;
+    const beritaById = this.dataBerita.find(b => b.id === id);
+    if(beritaById) {
+      beritaById.views++;
     }
   }
   private findCommentById(comments: Komentar[], id: number): Komentar | null{

@@ -27,15 +27,10 @@
         <div class="text-content" >
           <ion-card-title class="news-title">{{berita.judul}}</ion-card-title>
           <ion-card-subtitle>{{berita.categories}}</ion-card-subtitle>
-          <div class="views-container">
-            <ion-icon name="eye-outline" color="medium"></ion-icon>
-            <ion-note>{{ berita.views || 0 }} views</ion-note>
-          </div>
-          <p class="news-content">{{berita.konten | slice:0:120}}</p>
+          <p class="news-content">{{berita.konten | slice:0:120}}...</p>
         </div>
       </div>
 
-      
       <!-- Ikon Favorit yang Diposisikan di Pojok -->
       <div class="favorite-icon" (click)="onToggleFavorite(berita, $event)">
         <ion-icon name="heart" color="danger" *ngIf="berita.isFavorite"></ion-icon>
@@ -44,9 +39,13 @@
 
       <ion-card-content class="news-content" > 
         
-        <!-- Wadah untuk rating dan komentar -->
+        <div class="views-container">
+            <ion-icon name="eye-outline" color="medium"></ion-icon>
+            <ion-note>{{ berita.views || 0 }} views</ion-note>
+        </div>
+
         <div class="rate">
-          <ion-icon name="star-outline"></ion-icon>
+          <ion-icon name="star" color="warning"></ion-icon>
           <ion-note>{{ getRataRataRating(berita.rating)}} / 5</ion-note>
         </div>
 

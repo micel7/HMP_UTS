@@ -46,6 +46,7 @@ export class CategoryPage implements OnInit {
   }
   bacaBerita(id: number) {
     // (Fungsi ini tetap sama)
+    this.beritaService.incrementViews(id);
     this.router.navigate(['/bacaberita', { id: id }]);
   }
 

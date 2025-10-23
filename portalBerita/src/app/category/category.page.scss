@@ -14,6 +14,14 @@ ion-card {
   position: relative;
 }
 
+p{
+  padding-bottom:4px;
+}
+
+ion-card-header {
+  margin: 0px;
+}
+
 // Mengatur posisi ikon favorit
 .favorite-icon {
   position: absolute;
@@ -54,7 +62,7 @@ ion-list{
   margin-top: 8px;
   font-size: 0.75rem;
   display: flex;
-  gap: 6px;
+  gap: 2px;
   color: var(--ion-color-medium);
   align-items: center;
 }
@@ -94,4 +102,8 @@ ion-list{
   display: flex;
   align-items: center;
   gap: 4px; // Jarak antara ikon komentar dan teksnya
+}
+
+ion-note{
+  padding-left: 4px;
 }

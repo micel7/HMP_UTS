@@ -31,6 +31,7 @@ export class FavoritePage implements OnInit {
   }
 
   goBacaBerita(id: number) {
+    this.dataService.incrementViews(id);
     this.navCtrl.navigateForward(['/bacaberita', { id: id }]);
   }
 }

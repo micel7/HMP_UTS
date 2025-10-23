@@ -38,8 +38,8 @@ export class DaftarberitaPage implements OnInit {
   }
   bacaBerita(id: number) {
     // (Fungsi ini tetap sama)
-    this.router.navigate(['/bacaberita', { id: id }]);
     this.beritaService.incrementViews(id);
+    this.router.navigate(['/bacaberita', { id: id }]);
   }
   onToggleFavorite(berita: Berita, event: Event) {
     // Stop event biar tidak memicu klik pada card

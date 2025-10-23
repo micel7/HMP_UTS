@@ -63,6 +63,14 @@ export class LoginPage implements OnInit {
   }
 
   ngOnInit() {
+    this.isAlreadyLogin()
+  }
+
+  isAlreadyLogin(){
+    if (this.datauser.loggedInUser){
+      console.log('Sudah login')
+      this.navCtrl.navigateRoot('/home')
+    }
   }
 
 }

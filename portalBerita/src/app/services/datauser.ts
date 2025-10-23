@@ -62,7 +62,7 @@ export class Datauser {
   }
   
   logout(){
-    localStorage.removeItem('loggedInUser');
+    localStorage.removeItem('UserTerakhir');
     this.loggedInUser = null;
   }
 

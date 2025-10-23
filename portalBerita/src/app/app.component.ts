@@ -27,6 +27,7 @@ export class AppComponent {
       this.username = this.duService.loggedInUser.username;
     } else {
       this.username = null;
+      this.router.navigate(['/login']);
     }
   }
 

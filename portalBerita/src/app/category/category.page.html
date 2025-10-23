@@ -31,7 +31,12 @@
         </ion-card-header>
         <ion-card-content>
           <p>{{ berita.konten | slice:0:120 }}...</p>
-          <ion-note color="medium">Rating: {{ getRataRataRating(berita.rating) }}/5</ion-note>
+          <ion-icon name="star" color="warning"></ion-icon>
+          <ion-note>{{getRataRataRating(berita.rating)}} / 5</ion-note>
+          <div class="views-container">
+            <ion-icon name="eye-outline" color="medium"></ion-icon>
+            <ion-note>{{ berita.views || 0 }} views</ion-note>
+          </div>
         </ion-card-content>
       </ion-card>
     </ion-list>

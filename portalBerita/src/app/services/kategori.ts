@@ -13,25 +13,25 @@ export class Kategori {
       nama: 'Teknologi',
       icon: 'laptop-outline',
       color: 'primary',
-      jumlahBerita: 5,
+      jumlahBerita: 0,
     },
     {
       nama: 'Olahraga',
       icon: 'football-outline',
       color: 'success',
-      jumlahBerita: 3,
+      jumlahBerita: 0,
     },
     {
       nama: 'Ekonomi',
       icon: 'trending-up-outline',
       color: 'warning',
-      jumlahBerita: 4,
+      jumlahBerita: 0,
     },
     {
       nama: 'Game',
       icon: 'game-controller-outline',
       color: 'tertiary',
-      jumlahBerita: 4,
+      jumlahBerita: 0,
     },
   ];
   getKategori(): Categories[] {

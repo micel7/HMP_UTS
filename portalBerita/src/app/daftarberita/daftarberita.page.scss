@@ -43,7 +43,7 @@ ion-card {
     margin-top: 8px;
     font-size: 0.75rem;
     display: flex;
-    gap: 6px;
+    gap: 8px;
     color: var(--ion-color-medium);
     align-items: center;
   }
@@ -55,6 +55,7 @@ ion-card {
   }
 
   .news-title{
+    padding-bottom:4px;
     font-size: 1.25rem;
     font-weight: 600;
     line-height: 1.4;
@@ -66,12 +67,12 @@ ion-card {
   }
 
   .news-content {
-    padding: 0 16px 16px 1px; // Padding tanpa bagian atas
+    padding: 5px 16px 16px 1px;
     font-size: 1rem;
   }
 
   .rate {
-    margin-top: 12px;
+    margin-top: 8px;
     display: flex;
     align-items: center;
     font-size: 0.8rem;
@@ -79,7 +80,7 @@ ion-card {
   }
   
   .comments {
-    margin-top:12px;
+    margin-top:8px;
     display: flex;
     align-items: center;
     gap: 4px; // Jarak antara ikon komentar dan teksnya
