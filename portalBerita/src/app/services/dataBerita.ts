@@ -1,11 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Berita } from '../models/berita.model';
 import { Komentar } from '../models/komentar.model';
+import { Datauser } from './datauser';
 
 @Injectable({
   providedIn: 'root'
 })
 export class Databerita {
+  public userServiceName:string | null = null;
+  constructor(private userService: Datauser) {}
   private dataBerita: Berita[] = [
     {
       id: 1,
@@ -79,14 +82,16 @@ export class Databerita {
       komentar: [
         {
           id: 1,
-          userId: 5,
+          userId: 1,
+          username: 'dave',
           isi: 'Langkah yang tepat dari Bank Sentral. Stabilitas nilai tukar Rupiah memang harus jadi prioritas utama saat ini, apalagi kondisi global lagi tidak menentu.',
           tanggal: new Date('2025-10-02T15:00:00'),
           replies:[]
         },
         {
           id: 2,
-          userId: 6,
+          userId: 3,
+          username: 'steve',
           isi: 'Berarti bunga KPR dan cicilan lain nggak akan naik dulu ya dalam waktu dekat? Syukurlah kalau begitu.',
           tanggal: new Date('2025-10-03T09:20:00'),
           replies:[]
@@ -94,6 +99,7 @@ export class Databerita {
         {
           id: 3,
           userId: 2,
+          username: 'bka',
           isi: 'Ditahan terus, kapan turunnya ya? Sektor riil butuh suku bunga yang lebih rendah biar bisa ekspansi.',
           tanggal: new Date('2025-10-04T18:00:00'),
           replies:[]
@@ -177,6 +183,9 @@ export class Databerita {
   addComment(beritaId: number, teksKomentar: string, parentId?: number) {
     const beritaItem = this.getBeritaById(beritaId);
 
+    const userServiceId = this.userService.loggedInUser?.userId
+    const userServiceName = this.userService.loggedInUser?.username
+
     if (beritaItem && teksKomentar.trim() !== '') {
       
       // bikin id baru 
@@ -188,7 +197,8 @@ export class Databerita {
 
       const newComment: Komentar = {
         id: newCommentId,
-        userId: 1, 
+        userId: Number(userServiceId), 
+        username: String(userServiceName),
         isi: teksKomentar,
         tanggal: new Date(),
         replies: [] // Selalu inisialisasi array replies

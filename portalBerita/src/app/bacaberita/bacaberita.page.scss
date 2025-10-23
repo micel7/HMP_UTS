@@ -1,5 +1,5 @@
 // bikin card menjadi patokan untuk posisi absolut
-ion-card {
+  ion-card {
     position: relative;
   }
   
@@ -39,9 +39,9 @@ ion-card {
   }
 
   // biar menjarak ke dalam buat yg replies
-  replies-container {
-    padding-left: 52px; 
-    margin-top: 12px;
+  .replies-container {
+    padding-left: 48px; 
+    margin: 12px 12px;
   }
   
   .comment-date {

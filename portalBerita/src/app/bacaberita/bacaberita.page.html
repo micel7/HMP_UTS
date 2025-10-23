@@ -2,7 +2,7 @@
   <ion-toolbar>
     <ion-title>{{ selectedBerita?.judul }}</ion-title>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/daftarberita"></ion-back-button>
+      <ion-back-button></ion-back-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -80,7 +80,7 @@
     <div *ngFor="let komen of selectedBerita.komentar" class="comment-thread">
       <ion-item>
         <ion-label class="ion-text-wrap">
-        <h2>User {{komen.userId}}</h2>
+        <h2>{{komen.username}}</h2>
         <p>{{komen.isi}}</p>
         <div class="comment-footer">
           <p class="comment-date"> {{ komen.tanggal | date:'short' }}</p>
@@ -103,7 +103,7 @@
       <!-- Loop ini buat menampilkan setiap balasan -->
       <ion-item *ngFor="let reply of komen.replies">
         <ion-label class="ion-text-wrap">
-          <h2>User {{ reply.userId }}</h2>
+          <h2>{{ reply.username }}</h2>
           <p>{{ reply.isi }}</p>
           <div class="comment-footer">
             <p class="comment-date">{{ reply.tanggal | date:'short' }}</p>
