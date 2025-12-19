@@ -28,7 +28,16 @@ export class CategoryPage implements OnInit {
   }
 
   loadKategori() {
-    this.daftarKategori = this.kategoriService.getKategori();
+    // Panggil method dari folder services
+    this.kategoriService.getCategories().subscribe(
+      (response) => {
+        console.log('Data Kategori dari DB:', response);
+        this.daftarKategori = response;
+      },
+      (error) => {
+        console.error('Gagal mengambil kategori:', error);
+      }
+    );
     this.daftarBerita = this.beritaService.getBerita();
   }
 
