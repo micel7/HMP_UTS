@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
   standalone: false,
 })
 export class CategoryPage implements OnInit {
-  index = 0;
+  // index = 0;
   jenistampilan = 'forYou';
   daftarKategori: Categories[] = [];
   daftarBerita: Berita[] = [];
