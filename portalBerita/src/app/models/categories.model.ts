@@ -1,6 +1,6 @@
 export interface Categories {
   id: number;
-  nama: string;
+  nama_kategori: string;
   icon: string;
   color: string;
   jumlahBerita: number;

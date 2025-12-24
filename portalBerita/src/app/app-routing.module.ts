@@ -32,7 +32,11 @@ const routes: Routes = [
   {
     path: 'register',
     loadChildren: () => import('./register/register.module').then( m => m.RegisterPageModule)
+  },  {
+    path: 'newcategory',
+    loadChildren: () => import('./newcategory/newcategory.module').then( m => m.NewcategoryPageModule)
   },
+
 
 
 

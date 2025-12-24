@@ -42,10 +42,10 @@ export class CategoryPage implements OnInit {
   }
 
   pilihKategori(Category: Categories) {
-    console.log('Kategori dipilih:', Category.nama);
+    console.log('Kategori dipilih:', Category.nama_kategori);
 
     // Nanti akan navigasi ke halaman daftar berita
-    this.router.navigate(['/daftarberita', Category.nama]);
+    this.router.navigate(['/daftarberita', Category.nama_kategori]);
   }
 
   getRataRataRating(rating: number[]): number {

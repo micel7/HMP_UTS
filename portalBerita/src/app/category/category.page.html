@@ -71,20 +71,25 @@
 
     <div class="kategori-grid">
       <ion-card 
-        *ngFor="let Categories of daftarKategori" 
-        (click)="pilihKategori(Categories)"
-        [color]="Categories.color"
+        *ngFor="let cat of daftarKategori" 
+        (click)="pilihKategori(cat)"
+        [color]="cat.color"
         button="true">
         
         <ion-card-content>
           <div class="kategori-item">
-            <ion-icon [name]="Categories.icon"></ion-icon>
-            <h3>{{ Categories.nama }}</h3>
-            <p>{{ Categories.jumlahBerita }} berita</p>
+            <ion-icon [name]="cat.icon"></ion-icon>
+            <h3>{{ cat.nama_kategori}}</h3>
+            <p>{{ cat.jumlahBerita }} berita</p>
           </div>
         </ion-card-content>
       </ion-card>
     </div>
   </div>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="jenistampilan === 'category'">
+    <ion-fab-button routerLink="/newcategory">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>
 
