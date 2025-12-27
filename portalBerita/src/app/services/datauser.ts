@@ -1,47 +1,26 @@
 import { Injectable } from '@angular/core';
 import { User } from '../models/user.model';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class Datauser {
-  private datauser: User[] = [
-    {
-      userId: 1,
-      username: "dave",
-      password: "dave"
-    },
-    {
-      userId: 2,
-      username: "bka",
-      password: "bka"
-    },
-    {
-      userId: 3,
-      username: "steve",
-      password: "steve"
-    },
-    {
-      userId: 4,
-      username: "michelle",
-      password: "michelle"
-    },
-  ]
+  public loggedInUser: any = null;
 
-  public loggedInUser: User | null = null;
+  private apiLoginUrl = 'https://ubaya.cloud/hybrid/160423076/projectHMP/login.php';
+  private apiRegisterUrl = 'https://ubaya.cloud/hybrid/160423076/projectHMP/register.php';
 
-  constructor() { 
+
+  constructor(private http: HttpClient) { 
     const savedUsername = localStorage.getItem('UserTerakhir');
 
     //cek username tersimpan
     if (savedUsername) {
       //filtering apakah benar
-      const foundUser = this.datauser.find(u => u.username === savedUsername);
-
-      //kalau ketemu set logged in user
-      if (foundUser) {
-        this.loggedInUser = foundUser;
-      }
+      this.loggedInUser = JSON.parse(savedUsername);
     }
   }
 
@@ -49,38 +28,30 @@ export class Datauser {
     localStorage.setItem('UserTerakhir', uname)
   } //untuk simpan data seperti di session
 
-  login(uname: string, pwd: string): User | boolean {
-    const user = this.datauser.find(
-      u => u.username === uname && u.password === pwd
+  login(email: string, password: string): Observable<any> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' });
+    
+    const body = new URLSearchParams();
+    body.set('email', email);
+    body.set('password', password);
+
+    return this.http.post(this.apiLoginUrl, body.toString(), { headers }).pipe(
+      tap((response: any) => {
+        // Jika login sukses, data kesimpen di service & localStorage
+        if (response.result === 'success') {
+          this.loggedInUser = {
+            nama: response.nama,
+            email: email
+          };
+          // Simpan objek user lengkap ke localStorage
+          this.simpanData(this.loggedInUser);
+        }
+      })
     );
-    if(user) {
-      this.loggedInUser=user; //untuk keperluan melempar username ke component.ts
-      this.simpanData(uname);
-      return true;
-    }
-    return false;
   }
   
   logout(){
     localStorage.removeItem('UserTerakhir');
     this.loggedInUser = null;
-  }
-
-  register(newUser: User): boolean {
-    const userExists = this.datauser.some(user => user.username == newUser.username);
-
-    if (userExists) {
-      console.error('Username sudah ada, silahkan input username lain');
-      return false;
-    }
-
-    let newId = 1;
-    if (this.datauser.length > 0) {
-      newId = Math.max(...this.datauser.map(u => u.userId)) + 1;
-    }
-    newUser.userId = newId;
-
-    this.datauser.push(newUser);
-    return true;
   }
 }
