@@ -12,6 +12,7 @@ import { User } from '../models/user.model';
 export class RegisterPage implements OnInit {
 
   usernameInput: string = '';
+  emailInput: string = '';
   passwordInput: string = '';
 
   constructor(
@@ -32,7 +33,8 @@ export class RegisterPage implements OnInit {
     // buat objek user baru dari input
     const newUser: User = {
       userId: 0, // ID nanti akan dibuat oleh service
-      username: this.usernameInput,
+      name: this.usernameInput,
+      email: this.emailInput,
       password: this.passwordInput,
     };
 

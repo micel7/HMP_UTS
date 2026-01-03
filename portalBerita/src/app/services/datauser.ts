@@ -24,8 +24,8 @@ export class Datauser {
     }
   }
 
-  simpanData(uname: string){
-    localStorage.setItem('UserTerakhir', uname)
+  simpanData(unameObj: any){
+    localStorage.setItem('UserTerakhir', JSON.stringify(unameObj))
   } //untuk simpan data seperti di session
 
   login(email: string, password: string): Observable<any> {
@@ -53,5 +53,16 @@ export class Datauser {
   logout(){
     localStorage.removeItem('UserTerakhir');
     this.loggedInUser = null;
+  }
+
+  register(newUser: User): Observable<any> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' });
+    
+    const body = new URLSearchParams();
+    body.set('username', newUser.name); 
+    body.set('password', newUser.password); 
+    body.set('email', newUser.email);
+
+    return this.http.post(this.apiRegisterUrl, body.toString(), { headers });
   }
 }
