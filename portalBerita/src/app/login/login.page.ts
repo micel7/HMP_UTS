@@ -9,7 +9,7 @@ import { Datauser } from '../services/datauser';
   standalone: false
 })
 export class LoginPage implements OnInit {
-  unameInput: string = '';
+  emailInput: string = '';
   pwdInput: string = '';
 
   constructor(
@@ -18,34 +18,43 @@ export class LoginPage implements OnInit {
     private alertCtrl: AlertController
   ) { }
 
+  //KODE LAMA
   // async handleLogin() {
-  //   const user = this.datauser.login(this.unameInput, this.pwdInput);
+  //   try {
+  //     const isLoginTrue = this.datauser.login(this.unameInput, this.pwdInput);
 
-  //   if (user) {
-  //     this.navCtrl.navigateRoot('/home');
-  //     await this.showAlert('Sukses', 'Anda berhasil login.');
+  //     if (isLoginTrue) {
+  //       await this.showAlert('Sukses', 'Anda berhasil login.');
 
-  //   } else{
-  //     await this.showAlert('Gagal', 'Username atau password salah.');
+  //       this.navCtrl.navigateRoot('/home');
+
+  //     } else {
+  //       await this.showAlert('Gagal', 'Username atau password salah.');
+  //     }
+
+  //   } catch (error: any) {
+  //     await this.showAlert('Gagal', error.message || 'Username atau password salah.');
   //   }
   // }
-
-  async handleLogin() {
-    try {
-      const isLoginTrue = this.datauser.login(this.unameInput, this.pwdInput);
-
-      if (isLoginTrue) {
-        await this.showAlert('Sukses', 'Anda berhasil login.');
-        
-        this.navCtrl.navigateRoot('/home');
-        
-      } else {
-        await this.showAlert('Gagal', 'Username atau password salah.');
-      }
-
-    } catch (error: any) {
-      await this.showAlert('Gagal', error.message || 'Username atau password salah.');
+  handleLogin() {
+    if (this.emailInput === '' || this.pwdInput === '') {
+      this.showAlert('Gagal', 'Email dan password harus diisi');
+      return;
     }
+
+    this.datauser.login(this.emailInput, this.pwdInput)
+      .subscribe((response: any) => {
+
+        if (response.result === 'success') {
+          this.showAlert('Sukses', 'Anda berhasil login');
+          this.navCtrl.navigateRoot('/home');
+        } else {
+          this.showAlert('Gagal', response.message);
+        }
+
+      }, error => {
+        this.showAlert('Gagal', 'Terjadi kesalahan koneksi');
+      });
   }
 
 
@@ -63,13 +72,19 @@ export class LoginPage implements OnInit {
   }
 
   ngOnInit() {
-    this.isAlreadyLogin()
+    // this.isAlreadyLogin()
   }
 
-  isAlreadyLogin(){
-    if (this.datauser.loggedInUser){
+  isAlreadyLogin() {
+    if (this.datauser.loggedInUser) {
       console.log('Sudah login')
       this.navCtrl.navigateRoot('/home')
+    }
+  }
+
+  ionViewWillEnter() {
+    if (this.datauser.loggedInUser) {
+      this.navCtrl.navigateRoot('/home');
     }
   }
 

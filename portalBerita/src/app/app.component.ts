@@ -12,7 +12,7 @@ import { Datauser } from './services/datauser';
   standalone: false,
 })
 export class AppComponent {
-  public username: string | null = null;
+  public name: string | null = null;
 
   constructor(private duService: Datauser, private router: Router) {
     this.checkLoginStatus();
@@ -24,12 +24,29 @@ export class AppComponent {
   
   checkLoginStatus() {
     if (this.duService.loggedInUser) {
-      this.username = this.duService.loggedInUser.username;
+      this.name = this.duService.loggedInUser.nama;
     } else {
-      this.username = null;
-      this.router.navigate(['/login']);
+      this.name = null;
+      
+      // Cek URL saat ini. Jika user sudah ada di halaman 'login' atau 'register', 
+      // JANGAN paksa redirect lagi. Biarkan user di sana.
+      const currentUrl = this.router.url;
+      
+      if (!currentUrl.includes('/login') && !currentUrl.includes('/register')) {
+        this.router.navigate(['/login']);
+      }
     }
   }
+
+  // checkLoginStatus() {
+  //     // Cek URL, IF sedang di page register atau login, jangan paksa redirect
+  //     const currentUrl = this.router.url;
+      
+  //     // includes() untuk mengantisipasi jika ada query params atau slash di akhir
+  //     if (!currentUrl.includes('/login') && !currentUrl.includes('/register')) {
+  //       this.router.navigate(['/login']);
+  //     }
+  // }
 
   handleLogout() {
     this.duService.logout();

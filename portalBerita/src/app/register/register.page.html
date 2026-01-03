@@ -1,27 +1,52 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
     <ion-title>Register</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">register</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content>
 
   <ion-list>
+
     <ion-item>
-      <ion-input label="Username Baru" label-placement="floating" [(ngModel)]="usernameInput"></ion-input>
+      <ion-input
+        label="Nama"
+        label-placement="floating"
+        [(ngModel)]="nameInput">
+      </ion-input>
     </ion-item>
+
     <ion-item>
-      <ion-input label="Password Baru" type="password" label-placement="floating"
-        [(ngModel)]="passwordInput"></ion-input>
+      <ion-input
+        label="Email"
+        type="email"
+        label-placement="floating"
+        [(ngModel)]="emailInput">
+      </ion-input>
     </ion-item>
+
+    <ion-item>
+      <ion-input
+        label="Password"
+        type="password"
+        label-placement="floating"
+        [(ngModel)]="passwordInput">
+      </ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-input
+        label="Konfirmasi Password"
+        type="password"
+        label-placement="floating"
+        [(ngModel)]="confirmPasswordInput">
+      </ion-input>
+    </ion-item>
+
   </ion-list>
 
   <ion-button expand="block" (click)="handleRegister()" class="ion-margin-top">
     Register
   </ion-button>
+
 </ion-content>
