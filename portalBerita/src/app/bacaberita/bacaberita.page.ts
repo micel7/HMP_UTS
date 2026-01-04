@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Berita } from '../models/berita.model';
 import { Databerita } from '../services/dataBerita';
+import { Subscription } from 'rxjs';
+import { Komentar } from '../models/komentar.model';
 
 @Component({
   selector: 'app-bacaberita',
@@ -22,6 +24,9 @@ export class BacaberitaPage implements OnInit {
   replyingToCommentId: number | null = null; // Menyimpan ID komentar yang sedang dibalas
   replyText: string = ''; // Teks untuk form balasan
 
+  // Simpan langganan agar bisa dimatikan saat pindah halaman (cegah memory leak)
+  private dataSub: Subscription | undefined;
+
   ngOnInit() {
     // Dengarkan perubahan pada parameter URL
     this.route.paramMap.subscribe((params) => {
@@ -31,12 +36,51 @@ export class BacaberitaPage implements OnInit {
       if (beritaIdString) {
         // ubah string 'id' ke number
         const beritaId = +beritaIdString;
+        this.dataSub = this.beritaService.dataBerita$.subscribe(list => {
+           const found = list.find(b => b.id === beritaId);
+          if (found) {
+            // Kita buat salinan objek agar tidak merusak data asli di service
+            this.selectedBerita = { ...found };
+            
+            // KONVERSI: Ubah daftar komentar lurus dari DB menjadi struktur pohon (replies)
+            this.selectedBerita.komentar = this.buildTree(found.komentar);
+          }
+        });
 
-        // panggil service untuk mendapatkan detail berita berdasarkan id
-        this.selectedBerita = this.beritaService.getBeritaById(beritaId);
+         this.beritaService.addComment(beritaId, '', -1); 
+        // // panggil service untuk mendapatkan detail berita berdasarkan id
+        // this.selectedBerita = this.beritaService.getBeritaById(beritaId);
       }
     });
   }
+
+  private buildTree(flatComments: Komentar[]): Komentar[] {
+    const map = new Map<number, Komentar>();
+    const roots: Komentar[] = [];
+
+    // Inisialisasi map dan pastikan array replies ada
+    flatComments.forEach(c => {
+      map.set(c.id, { ...c, replies: [] });
+    });
+
+    map.forEach(c => {
+      if (c.parent_id) {
+        const parent = map.get(c.parent_id);
+        if (parent) {
+          parent.replies!.push(c);
+        } else {
+          // Jika parent tidak ditemukan, anggap sebagai root
+          roots.push(c);
+        }
+      } else {
+        roots.push(c);
+      }
+    });
+
+    return roots;
+  }
+
+
   onToggleFavorite(berita: Berita, event: Event) {
     // Stop event biar tidak memicu klik pada card
     event.stopPropagation();
