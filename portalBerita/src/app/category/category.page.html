@@ -50,7 +50,7 @@
 
         <div class="rate">
           <ion-icon name="star" color="warning"></ion-icon>
-          <ion-note>{{ getRataRataRating(berita.rating)}} / 5</ion-note>
+          <ion-note>{{ (berita.rating || 0) | number:'1.1-1' }} / 5</ion-note>
         </div>
 
         <div class="comments">

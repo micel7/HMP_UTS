@@ -38,7 +38,12 @@ export class CategoryPage implements OnInit {
         console.error('Gagal mengambil kategori:', error);
       }
     );
-    this.daftarBerita = this.beritaService.getBerita();
+    this.beritaService.getBerita().subscribe(
+      (response: any) => {
+        console.log('Data Berita dari DB:', response.data);
+        this.daftarBerita = response.data;
+      }, (error) => { console.error('Gagal mengambil berita:', error); }
+    );
   }
 
   pilihKategori(Category: Categories) {
@@ -48,6 +53,7 @@ export class CategoryPage implements OnInit {
     this.router.navigate(['/daftarberita', Category.nama_kategori]);
   }
 
+  /*  Average udah di handle di Querry
   getRataRataRating(rating: number[]): number {
     if (!rating || rating.length === 0) return 0; //kalau tidak ada rating return 0
     //kalau ada rating ditotalkan dulu lalu dibagi sesuai jumlah rating
@@ -59,6 +65,7 @@ export class CategoryPage implements OnInit {
     let avgRounded = parseFloat(avg.toFixed(1)) //parseFloat untuk mengubah ke float karena toFixed(1) membulatkan 1 decimal tetapi berupa string 
     return avgRounded;
   }
+  */
   bacaBerita(id: number) {
     // (Fungsi ini tetap sama)
     this.beritaService.incrementViews(id);

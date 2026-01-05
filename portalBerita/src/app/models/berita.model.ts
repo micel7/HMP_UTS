@@ -7,7 +7,8 @@ export interface Berita {
   foto: string;
   gambarHalaman: string[]; // Minimal 4 gambar untuk halaman baca berita
   categories: string[];
-  rating: number[];
+  //rating: number[];
+  rating: number;
   komentar: Komentar[]; // Daftar komentar dari user
   isFavorite: boolean;
   views: number;

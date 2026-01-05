@@ -1,24 +1,231 @@
+import { Databerita } from './dataBerita';
 import { Injectable } from '@angular/core';
 import { Berita } from '../models/berita.model';
 import { Komentar } from '../models/komentar.model';
 import { Datauser } from './datauser';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
-import { HttpClient, HttpParams} from '@angular/common/http';
+import { HttpClient, HttpParams, HttpHeaders} from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class Databerita {
-  private apiUrl = 'https://ubaya.cloud/hybrid/160423076/projectHMP/comment.php';
+  private apiUrlComment = 'https://ubaya.cloud/hybrid/160423076/projectHMP/comment.php';
+  private apiUrlNews = 'https://ubaya.cloud/hybrid/160423076/projectHMP/news.php';
+
   private _dataBeritaSubject: BehaviorSubject<Berita[]>;
   public dataBerita$: Observable<Berita[]>;
+  
+  private dataBerita: Berita[] = [];
+  //public userServiceName:string | null = null;
 
-  public userServiceName:string | null = null;
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private dataUser: Datauser) {
     this._dataBeritaSubject = new BehaviorSubject<Berita[]>(this.dataBerita);
     this.dataBerita$ = this._dataBeritaSubject.asObservable();
   }
+  
+  getBerita(): Observable<any> {
+    return this.http.get(this.apiUrlNews).pipe(
+      tap((response: any) => {
+        // Update dataBerita dan BehaviorSubject saat data diambil dari API
+        if(response.result === 'success') {
+          this.dataBerita = response.data;
+          this._dataBeritaSubject.next(this.dataBerita);
+        }
+      }),
+      catchError(err => {
+        console.error('Gagal ambil berita:', err);
+        return throwError(() => new Error('Gagal terhubung ke server.'));
+      })
+    );
+  }
+  getBeritaById(id: number): Observable<any> {
+    //cari dan kembalikan berita yg idnya sesuai
+    return this.http.get(this.apiUrlNews + '?id=' + id);
+  }
+
+  addRating(newsId: number, ratingValue: number) {
+    // Kita buat body pesan sesuai kolom di project_news_ratings.sql
+    const headers = new HttpHeaders({'Content-Type': 'application/x-www-form-urlencoded',});
+    const body = new URLSearchParams();
+    body.set('news_id', newsId.toString());
+    body.set('user_id', this.dataUser.loggedInUser?.userId?.toString() || '0');
+    body.set('rating', ratingValue.toString());
+    const urlEncodedData = body.toString();
+
+    this.http.post<any>('https://ubaya.cloud/hybrid/160423076/projectHMP/add_rating.php', urlEncodedData, { headers }).subscribe({
+      next: (res) => {
+        if (res.result === 'success') {
+          console.log('Rating berhasil disimpan ke DB');
+          // Setelah sukses di DB, kita refresh data lokal agar UI ter-update
+          this.getBerita().subscribe();
+        }
+      }, error: (err) => console.error('Error koneksi API:', err)
+    });
+  }
+  
+  
+  toggleFavoriteStatus(id: number) {
+    // Cari berita yang cocok dengan id yang dikirim
+    const beritaItem = this.dataBerita.find(b => b.id === id); // cari berita yg cocok sm id yg dikirim
+
+    // Jika berita ditemukan, balik nilainya
+    if (beritaItem) {
+      beritaItem.isFavorite = !beritaItem.isFavorite;
+      this._dataBeritaSubject.next([...this.dataBerita]); // Update subject agar komponen yg subscribe ter-update
+    }
+  }
+  
+  private flattenComments(comments: Komentar[]): Komentar[] {
+    let flat: Komentar[] = [];
+    for (const comment of comments) {
+      flat.push(comment);
+      if (comment.replies && comment.replies.length > 0) {
+        // Gabungkan dengan hasil rekursif dari balasannya
+        flat = flat.concat(this.flattenComments(comment.replies));
+      }
+    }
+    return flat;
+  }
+
+  // LOGIC COMMENT VERSI DATABASE
+  getCommentsFromAPI(newsId: number): Observable<Komentar[]> {
+    // PHP menerima news_id lewat GET
+    return this.http.get<any>(`${this.apiUrlComment}?news_id=${newsId}`).pipe(
+      map(response => {
+        if (response.result === 'OK') {
+          return response.data; 
+        }
+        return [];
+      }),
+      catchError(err => {
+        console.error('Gagal ambil komentar:', err);
+        return throwError(() => new Error('Gagal terhubung ke server.'));
+      })
+    );
+  }
+
+  addComment(newsId: number, content: string, parentId?: number) {
+    // Kita buat body pesan sesuai kolom di project_comments.sql
+    const body = new HttpParams()
+      .set('news_id', newsId.toString())
+      .set('user_id', this.dataUser.loggedInUser?.userId?.toString() || '0')
+      .set('content', content)
+      .set('parent_id', parentId ? parentId.toString() : '');
+
+    // Mengirim data menggunakan POST ke PHP
+    this.http.post<any>(this.apiUrlComment, body, {
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+    }).subscribe({
+      next: (res) => {
+        if (res.result === 'OK') {
+          console.log('Komentar berhasil disimpan ke DB');
+          // Setelah sukses di DB, kita refresh data lokal agar UI ter-update
+          this.refreshCommentsLocal(newsId);
+        } else {
+          console.error('Server menolak komentar:', res.message);
+        }
+      },
+      error: (err) => console.error('Error koneksi API:', err)
+    });
+  }
+
+  private refreshCommentsLocal(newsId: number){
+    this.getCommentsFromAPI(newsId).subscribe(newComments => {
+      const currentList = this._dataBeritaSubject.getValue();
+      const berita = currentList?.find(b => b.id === newsId);
+      if (berita){
+        berita.komentar = newComments;
+        this._dataBeritaSubject?.next([...currentList]);
+      }
+    })
+  }
+}
+
+  /*
+  incrementViews(id: number): void {
+    const beritaById = this.dataBerita.find(b => b.id === id);
+    if(beritaById) {
+      beritaById.views++;
+    }
+  }
+
+  addRating(beritaId: number, ratingValue: number) {
+    const beritaItem = this.dataBerita.find(b => b.id === beritaId);
+    if (beritaItem) {
+      // Tambahkan nilai rating baru ke dalam array
+      beritaItem.rating.push(ratingValue);
+    }
+  }
+  */
+
+  // addComment(beritaId: number, teksKomentar: string, parentId?: number) {
+  //   const beritaItem = this.getBeritaById(beritaId);
+
+  //   const userServiceId = this.userService.loggedInUser?.userId
+  //   const userServiceName = this.userService.loggedInUser?.username
+
+  //   if (beritaItem && teksKomentar.trim() !== '') {
+      
+  //     // bikin id baru 
+  //     const allComments = this.flattenComments(beritaItem.komentar);
+      
+  //     // Secara eksplisit memberi tipe (c: Komentar)
+  //     const maxId = allComments.length > 0 ? Math.max(...allComments.map((c: Komentar) => c.id)) : 0;
+  //     const newCommentId = maxId + 1;
+
+  //     const newComment: Komentar = {
+  //       id: newCommentId,
+  //       userId: Number(userServiceId), 
+  //       username: String(userServiceName),
+  //       isi: teksKomentar,
+  //       tanggal: new Date(),
+  //       replies: [] // Selalu inisialisasi array replies
+  //     };
+
+  //     // Selalu cek apakah ini balasan atau komentar baru
+  //     if (parentId) {
+  //       // Misal parent exist dan ini comment replies, maka
+  //       // Cari komentar induknya menggunakan fungsi helper
+  //       const parentComment = this.findCommentById(beritaItem.komentar, parentId);
+        
+  //       if (parentComment) { 
+  //         // Pengecekan semisal comment belum ada array untuk replies 
+  //         if (!parentComment.replies) {
+  //           parentComment.replies = [];
+  //         }
+  //         // Tambahkan komentar baru sebagai balasan
+  //         parentComment.replies.unshift(newComment);
+  //       }
+  //     } else {
+  //       // Kalau misal ini comment utama langsung masuk ke maina rray aja
+  //       beritaItem.komentar.unshift(newComment);
+  //     }
+  //   }
+  // }
+  
+  // private findCommentById(comments: Komentar[], id: number): Komentar | null{
+  //   for (const comment of comments){
+  //     if (comment.id === id){ // semisal commentnya coock langsung return
+  //       return comment;
+  //     }
+  //     // semisal tidak cocok, cek apakah komentar ini punya balasan.
+  //     if (comment.replies && comment.replies.length > 0) {
+  //       // misalnya punya, panggil fungsi ini lagi untuk mencari di dalam balasannya (rekursif).
+  //       const foundInReply = this.findCommentById(comment.replies, id);
+        
+  //       // misalnya di dalam balasan, langsung kembalikan hasilnya.
+  //       if (foundInReply) {
+  //         return foundInReply;
+  //       }
+  //     }
+      
+  //   }
+  //   return null; // semisal loop selesai dan gada hasil
+  // }
+
+  /*
   private dataBerita: Berita[] = [
     {
       id: 1,
@@ -156,163 +363,4 @@ export class Databerita {
     },
     
   ];
-  
-  getBerita(): Berita[] {
-    return this.dataBerita;
-  }
-  addRating(beritaId: number, ratingValue: number) {
-    const beritaItem = this.dataBerita.find(b => b.id === beritaId);
-    if (beritaItem) {
-      // Tambahkan nilai rating baru ke dalam array
-      beritaItem.rating.push(ratingValue);
-    }
-  }
-  toggleFavoriteStatus(id: number) {
-    // Cari berita yang cocok dengan id yang dikirim
-    const beritaItem = this.dataBerita.find(b => b.id === id); // cari berita yg cocok sm id yg dikirim
-
-    // Jika berita ditemukan, balik nilainya
-    if (beritaItem) {
-      beritaItem.isFavorite = !beritaItem.isFavorite;
-    }
-  }
-  getBeritaById(id: number) {
-    //cari dan kembalikan berita yg idnya sesuai
-    return this.dataBerita.find(berita => berita.id === id);
-  }
-  private flattenComments(comments: Komentar[]): Komentar[] {
-    let flat: Komentar[] = [];
-    for (const comment of comments) {
-      flat.push(comment);
-      if (comment.replies && comment.replies.length > 0) {
-        // Gabungkan dengan hasil rekursif dari balasannya
-        flat = flat.concat(this.flattenComments(comment.replies));
-      }
-    }
-    return flat;
-  }
-  
-  // addComment(beritaId: number, teksKomentar: string, parentId?: number) {
-  //   const beritaItem = this.getBeritaById(beritaId);
-
-  //   const userServiceId = this.userService.loggedInUser?.userId
-  //   const userServiceName = this.userService.loggedInUser?.username
-
-  //   if (beritaItem && teksKomentar.trim() !== '') {
-      
-  //     // bikin id baru 
-  //     const allComments = this.flattenComments(beritaItem.komentar);
-      
-  //     // Secara eksplisit memberi tipe (c: Komentar)
-  //     const maxId = allComments.length > 0 ? Math.max(...allComments.map((c: Komentar) => c.id)) : 0;
-  //     const newCommentId = maxId + 1;
-
-  //     const newComment: Komentar = {
-  //       id: newCommentId,
-  //       userId: Number(userServiceId), 
-  //       username: String(userServiceName),
-  //       isi: teksKomentar,
-  //       tanggal: new Date(),
-  //       replies: [] // Selalu inisialisasi array replies
-  //     };
-
-  //     // Selalu cek apakah ini balasan atau komentar baru
-  //     if (parentId) {
-  //       // Misal parent exist dan ini comment replies, maka
-  //       // Cari komentar induknya menggunakan fungsi helper
-  //       const parentComment = this.findCommentById(beritaItem.komentar, parentId);
-        
-  //       if (parentComment) { 
-  //         // Pengecekan semisal comment belum ada array untuk replies 
-  //         if (!parentComment.replies) {
-  //           parentComment.replies = [];
-  //         }
-  //         // Tambahkan komentar baru sebagai balasan
-  //         parentComment.replies.unshift(newComment);
-  //       }
-  //     } else {
-  //       // Kalau misal ini comment utama langsung masuk ke maina rray aja
-  //       beritaItem.komentar.unshift(newComment);
-  //     }
-  //   }
-  // }
-  incrementViews(id: number): void {
-    const beritaById = this.dataBerita.find(b => b.id === id);
-    if(beritaById) {
-      beritaById.views++;
-    }
-  }
-  // private findCommentById(comments: Komentar[], id: number): Komentar | null{
-  //   for (const comment of comments){
-  //     if (comment.id === id){ // semisal commentnya coock langsung return
-  //       return comment;
-  //     }
-  //     // semisal tidak cocok, cek apakah komentar ini punya balasan.
-  //     if (comment.replies && comment.replies.length > 0) {
-  //       // misalnya punya, panggil fungsi ini lagi untuk mencari di dalam balasannya (rekursif).
-  //       const foundInReply = this.findCommentById(comment.replies, id);
-        
-  //       // misalnya di dalam balasan, langsung kembalikan hasilnya.
-  //       if (foundInReply) {
-  //         return foundInReply;
-  //       }
-  //     }
-      
-  //   }
-  //   return null; // semisal loop selesai dan gada hasil
-  // }
-
-  // LOGIC COMMENT VERSI DATABASE
-  getCommentsFromAPI(newsId: number): Observable<Komentar[]> {
-    // PHP menerima news_id lewat GET
-    return this.http.get<any>(`${this.apiUrl}?news_id=${newsId}`).pipe(
-      map(response => {
-        if (response.result === 'OK') {
-          return response.data; 
-        }
-        return [];
-      }),
-      catchError(err => {
-        console.error('Gagal ambil komentar:', err);
-        return throwError(() => new Error('Gagal terhubung ke server.'));
-      })
-    );
-  }
-
-  addComment(newsId: number, content: string, parentId?: number) {
-    // Kita buat body pesan sesuai kolom di project_comments.sql
-    const body = new HttpParams()
-      .set('news_id', newsId.toString())
-      .set('user_id', '1') 
-      .set('content', content)
-      .set('parent_id', parentId ? parentId.toString() : '');
-
-    // Mengirim data menggunakan POST ke PHP
-    this.http.post<any>(this.apiUrl, body, {
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-    }).subscribe({
-      next: (res) => {
-        if (res.result === 'OK') {
-          console.log('Komentar berhasil disimpan ke DB');
-          // Setelah sukses di DB, kita refresh data lokal agar UI ter-update
-          this.refreshCommentsLocal(newsId);
-        } else {
-          console.error('Server menolak komentar:', res.message);
-        }
-      },
-      error: (err) => console.error('Error koneksi API:', err)
-    });
-  }
-
-  private refreshCommentsLocal(newsId: number){
-    this.getCommentsFromAPI(newsId).subscribe(newComments => {
-      const currentList = this._dataBeritaSubject.getValue();
-      const berita = currentList?.find(b => b.id === newsId);
-      if (berita){
-        berita.komentar = newComments;
-        this._dataBeritaSubject?.next([...currentList]);
-      }
-    })
-  }
-
-}
+  */
