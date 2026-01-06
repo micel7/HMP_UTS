@@ -1,4 +1,3 @@
-import { Databerita } from './dataBerita';
 import { Injectable } from '@angular/core';
 import { Berita } from '../models/berita.model';
 import { Komentar } from '../models/komentar.model';
@@ -6,6 +5,7 @@ import { Datauser } from './datauser';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { HttpClient, HttpParams, HttpHeaders} from '@angular/common/http';
+import { FavDexie } from '../fav-dexie';
 
 @Injectable({
   providedIn: 'root'
@@ -20,18 +20,32 @@ export class Databerita {
   private dataBerita: Berita[] = [];
   //public userServiceName:string | null = null;
 
-  constructor(private http: HttpClient, private dataUser: Datauser) {
+  constructor(private http: HttpClient, private dataUser: Datauser, private favDexie: FavDexie) {
     this._dataBeritaSubject = new BehaviorSubject<Berita[]>(this.dataBerita);
     this.dataBerita$ = this._dataBeritaSubject.asObservable();
   }
   
-  getBerita(): Observable<any> {
-    return this.http.get(this.apiUrlNews).pipe(
-      tap((response: any) => {
+/* ================================
+                BERITA
+    ================================*/
+  getBerita(query: string=''): Observable<any> {
+    const url = query ? `${this.apiUrlNews}?search=${encodeURIComponent(query)}` : this.apiUrlNews;
+
+    return this.http.get<any>(url).pipe(
+      tap(async (response: any) => {
         // Update dataBerita dan BehaviorSubject saat data diambil dari API
         if(response.result === 'success') {
-          this.dataBerita = response.data;
-          this._dataBeritaSubject.next(this.dataBerita);
+          const newsFromApi: Berita[] = response.data;
+          
+          // Cek favorit dari Dexie dan tandai di dataBerita
+          const favIds = await this.favDexie.getAllFavorites();
+
+          const mappedNews = newsFromApi.map(berita => ({ ...berita, isFavorite: favIds.includes(Number(berita.id)), komentar: berita.komentar || [] }));
+
+          if(!query) {
+            this.dataBerita = mappedNews;
+            this._dataBeritaSubject.next(this.dataBerita);
+          }
         }
       }),
       catchError(err => {
@@ -40,11 +54,30 @@ export class Databerita {
       })
     );
   }
+
   getBeritaById(id: number): Observable<any> {
     //cari dan kembalikan berita yg idnya sesuai
     return this.http.get(this.apiUrlNews + '?id=' + id);
   }
 
+  addBerita(judul: string, deskripsi: string, fotoUtama: string, categories: number[], images: string[]): Observable<any> {
+    const header = new HttpHeaders({'Content-Type': 'application/x-www-form-urlencoded',});
+    const body = new URLSearchParams();
+
+    body.set('user_id', this.dataUser.loggedInUser?.userId?.toString() || '0');
+    body.set('judul', judul);
+    body.set('deskripsi', deskripsi);
+    body.set('foto_utama', fotoUtama);
+    body.set('categories', JSON.stringify(categories));
+    body.set('images', JSON.stringify(images));
+    
+    const urlEncodedData = body.toString();
+    return this.http.post('https://ubaya.cloud/hybrid/160423076/projectHMP/add_news.php', urlEncodedData, { headers: header });
+  }
+
+/* ================================
+              RATING
+  ================================*/
   addRating(newsId: number, ratingValue: number) {
     // Kita buat body pesan sesuai kolom di project_news_ratings.sql
     const headers = new HttpHeaders({'Content-Type': 'application/x-www-form-urlencoded',});
@@ -64,31 +97,37 @@ export class Databerita {
       }, error: (err) => console.error('Error koneksi API:', err)
     });
   }
+
+  checkUserRating(newsId: number): Observable<any> {
+    const userId = this.dataUser.loggedInUser?.userId || 0;
+    return this.http.get(`https://ubaya.cloud/hybrid/160423076/projectHMP/add_rating.php?news_id=${newsId}&user_id=${userId}`);
+  }
   
-  
-  toggleFavoriteStatus(id: number) {
+/* ================================
+              FAVORITE
+  ================================*/ 
+  async toggleFavoriteStatus(id: number) {
     // Cari berita yang cocok dengan id yang dikirim
     const beritaItem = this.dataBerita.find(b => b.id === id); // cari berita yg cocok sm id yg dikirim
 
     // Jika berita ditemukan, balik nilainya
     if (beritaItem) {
       beritaItem.isFavorite = !beritaItem.isFavorite;
+
+      //update ke dexie
+      if(beritaItem.isFavorite) {
+        await this.favDexie.addFavorite(id);
+      } else {
+        await this.favDexie.removeFavorite(id);
+      }
+
       this._dataBeritaSubject.next([...this.dataBerita]); // Update subject agar komponen yg subscribe ter-update
     }
   }
-  
-  private flattenComments(comments: Komentar[]): Komentar[] {
-    let flat: Komentar[] = [];
-    for (const comment of comments) {
-      flat.push(comment);
-      if (comment.replies && comment.replies.length > 0) {
-        // Gabungkan dengan hasil rekursif dari balasannya
-        flat = flat.concat(this.flattenComments(comment.replies));
-      }
-    }
-    return flat;
-  }
 
+/* ================================
+              COMMENT
+  ================================*/ 
   // LOGIC COMMENT VERSI DATABASE
   getCommentsFromAPI(newsId: number): Observable<Komentar[]> {
     // PHP menerima news_id lewat GET
@@ -224,6 +263,20 @@ export class Databerita {
   //   }
   //   return null; // semisal loop selesai dan gada hasil
   // }
+
+  /*
+  private flattenComments(comments: Komentar[]): Komentar[] {
+    let flat: Komentar[] = [];
+    for (const comment of comments) {
+      flat.push(comment);
+      if (comment.replies && comment.replies.length > 0) {
+        // Gabungkan dengan hasil rekursif dari balasannya
+        flat = flat.concat(this.flattenComments(comment.replies));
+      }
+    }
+    return flat;
+  }
+  */
 
   /*
   private dataBerita: Berita[] = [

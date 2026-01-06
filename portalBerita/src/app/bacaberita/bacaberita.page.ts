@@ -36,36 +36,70 @@ export class BacaberitaPage implements OnInit {
       if (beritaIdString) {
         // ubah string 'id' ke number
         const beritaId = +beritaIdString;
+
+        //cek apakah sudah rating atau blom
+        this.beritaService.checkUserRating(beritaId).subscribe((res: any) => {
+          if(res.result === 'success' && res.has_rated > 0) {
+            this.ratingSubmitted = true;
+            this.userRating = res.nilai;
+          } else {
+            this.ratingSubmitted = false;
+            this.userRating = 0;
+          }
+        });
+
         this.dataSub = this.beritaService.dataBerita$.subscribe(list => {
-           const found = list.find(b => b.id === beritaId);
+          const found = list.find(b => b.id === beritaId);
           if (found) {
             // Kita buat salinan objek agar tidak merusak data asli di service
             this.selectedBerita = { ...found };
             
             // KONVERSI: Ubah daftar komentar lurus dari DB menjadi struktur pohon (replies)
-            this.selectedBerita.komentar = this.buildTree(found.komentar);
+            if(found.komentar) {
+              this.selectedBerita.komentar = this.buildTree(found.komentar);
+            } 
+          }
+          else {
+            this.beritaService.getBeritaById(beritaId).subscribe((res: any) => {
+              if(res.result === 'success' && res.data) {
+                const dataNews = Array.isArray(res.data) ? res.data[0] : res.data;
+
+                if (dataNews) {
+                  this.selectedBerita = dataNews;
+
+                  if(dataNews.has_rated > 0) {
+                    this.ratingSubmitted = true;
+                    this.userRating = dataNews.user_rating;
+                  }
+
+                  // KONVERSI: Ubah daftar komentar lurus dari DB menjadi struktur pohon (replies)
+                  this.selectedBerita!.komentar = this.buildTree(dataNews.komentar || []);
+                }
+              }
+            });
           }
         });
-
-         this.beritaService.addComment(beritaId, '', -1); 
-        // // panggil service untuk mendapatkan detail berita berdasarkan id
-        // this.selectedBerita = this.beritaService.getBeritaById(beritaId);
       }
     });
   }
 
   private buildTree(flatComments: Komentar[]): Komentar[] {
+    if (!flatComments || !Array.isArray(flatComments)) return [];
+
     const map = new Map<number, Komentar>();
     const roots: Komentar[] = [];
 
     // Inisialisasi map dan pastikan array replies ada
     flatComments.forEach(c => {
-      map.set(c.id, { ...c, replies: [] });
+      const id = Number(c.id);
+      map.set(id, { ...c, id:id, replies: [] });
     });
 
     map.forEach(c => {
-      if (c.parent_id) {
-        const parent = map.get(c.parent_id);
+      const parentId = c.parent_id ? Number(c.parent_id) : null;
+
+      if (parentId && parentId !== 0) {
+        const parent = map.get(parentId);
         if (parent) {
           parent.replies!.push(c);
         } else {

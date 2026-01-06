@@ -18,7 +18,11 @@ export class SearchPage implements OnInit {
   constructor(private dataBerita: Databerita, private router: Router) {}
 
   ngOnInit() {
-    this.allBerita = this.dataBerita.getBerita();
+    this.dataBerita.getBerita().subscribe((data: any) => {
+      if(data.result === 'success') {
+        this.allBerita = data.berita;
+      }
+    });
   }
 
   onSearchChange(event: any) {
@@ -27,11 +31,50 @@ export class SearchPage implements OnInit {
 
     if (query && query.trim() !== '') {
       this.isSearching = true;
-      this.searchBerita(query);
+
+      //Langsung pake API
+      this.dataBerita.getBerita(query).subscribe((data: any) => {
+        if(data.result === 'success') {
+          this.filteredBerita = data.berita;
+        }
+      });
     } else {
       this.isSearching = false;
       this.filteredBerita = [];
     }
+  }
+
+  onSearchClear() {
+    this.searchQuery = '';
+    this.filteredBerita = [];
+    this.isSearching = false;
+  }
+
+  openBerita(berita: Berita) {
+    // Navigate ke detail berita
+    // this.dataBerita.incrementViews(berita.id);   udah gaperlu karena udah di handle dari API news.php
+    this.router.navigate(['/bacaberita', { id: berita.id }]);
+  }
+
+  formatRating(rating: any): string {
+    const val = parseFloat(rating);
+    return isNaN(val) ? '0.0' : val.toFixed(1);
+  }
+
+}
+
+  /*
+  // Fungsi hitung rata-rata rating
+  getRataRataRating(rating: number[]): number {
+    if (!rating || rating.length === 0) return 0; //kalau tidak ada rating return 0
+    //kalau ada rating ditotalkan dulu lalu dibagi sesuai jumlah rating
+    let total = 0;
+    for (let i = 0; i < rating.length; i++) {
+      total += rating[i];
+    }
+    let avg = total/rating.length
+    let avgRounded = parseFloat(avg.toFixed(1)) //parseFloat untuk mengubah ke float karena toFixed(1) membulatkan 1 decimal tetapi berupa string 
+    return avgRounded;
   }
 
   searchBerita(query: string) {
@@ -52,29 +95,4 @@ export class SearchPage implements OnInit {
       return matchJudul || matchKonten || matchKategori;
     });
   }
-
-  onSearchClear() {
-    this.searchQuery = '';
-    this.filteredBerita = [];
-    this.isSearching = false;
-  }
-
-  openBerita(berita: Berita) {
-    // Navigate ke detail berita
-    this.dataBerita.incrementViews(berita.id);
-    this.router.navigate(['/bacaberita', { id: berita.id }]);
-  }
-
-  // Fungsi hitung rata-rata rating
-  getRataRataRating(rating: number[]): number {
-    if (!rating || rating.length === 0) return 0; //kalau tidak ada rating return 0
-    //kalau ada rating ditotalkan dulu lalu dibagi sesuai jumlah rating
-    let total = 0;
-    for (let i = 0; i < rating.length; i++) {
-      total += rating[i];
-    }
-    let avg = total/rating.length
-    let avgRounded = parseFloat(avg.toFixed(1)) //parseFloat untuk mengubah ke float karena toFixed(1) membulatkan 1 decimal tetapi berupa string 
-    return avgRounded;
-  }
-}
+  */

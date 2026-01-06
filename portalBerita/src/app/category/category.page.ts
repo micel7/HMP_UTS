@@ -41,7 +41,7 @@ export class CategoryPage implements OnInit {
     this.beritaService.getBerita().subscribe(
       (response: any) => {
         console.log('Data Berita dari DB:', response.data);
-        this.daftarBerita = response.data;
+        this.daftarBerita = response.data.map((b: any) => {return {...b, komentar: b.komentar || []};}); // Pastikan komentar selalu berupa array
       }, (error) => { console.error('Gagal mengambil berita:', error); }
     );
   }
@@ -68,8 +68,8 @@ export class CategoryPage implements OnInit {
   */
   bacaBerita(id: number) {
     // (Fungsi ini tetap sama)
-    this.beritaService.incrementViews(id);
-    this.router.navigate(['/bacaberita', { id: id }]);
+    //this.beritaService.incrementViews(id);
+    this.router.navigate(['/bacaberita', id]);
   }
 
   onToggleFavorite(berita: Berita, event: Event) {

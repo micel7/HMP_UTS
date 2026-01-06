@@ -27,7 +27,7 @@
         <div class="text-content" >
           <ion-card-title class="news-title">{{berita.judul}}</ion-card-title>
           <ion-card-subtitle>{{berita.categories}}</ion-card-subtitle>
-          <p class="news-content">{{berita.konten | slice:0:120}}...</p>
+          <p class="news-content">{{(berita.konten || '') | slice:0:120}}...</p>
         </div>
       </div>
 
@@ -46,12 +46,12 @@
 
         <div class="rate">
           <ion-icon name="star" color="warning"></ion-icon>
-          <ion-note>{{ getRataRataRating(berita.rating)}} / 5</ion-note>
+          <ion-note>{{ formatRating(berita.rating)}} / 5</ion-note>
         </div>
 
         <div class="comments">
           <ion-icon name="chatbubble-outline"></ion-icon>
-          <ion-note>{{ berita.komentar.length}} komentar</ion-note>
+          <ion-note>{{ (berita.komentar?.length || 0)}} komentar</ion-note>
         </div>
 
       </ion-card-content>

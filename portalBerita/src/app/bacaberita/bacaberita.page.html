@@ -36,7 +36,10 @@
 
     <ion-item *ngIf="ratingSubmitted" lines="none">
       <ion-icon name="checkmark-circle" color="success" slot="start"></ion-icon>
-      <ion-label>Terima kasih atas rating Anda!</ion-label>
+      <ion-label>
+        <h2>Terima kasih!</h2> 
+        <p>Anda sudah memberikan rating {{userRating}} untuk berita ini.</p>
+      </ion-label>
     </ion-item>
     
     <div *ngIf="!ratingSubmitted" class="ion-padding">

@@ -46,6 +46,7 @@ export class Datauser {
         // Jika login sukses, data kesimpen di service & localStorage
         if (response.result === 'success') {
           this.loggedInUser = {
+            userId: response.id,
             nama: response.nama,
             email: email
           };

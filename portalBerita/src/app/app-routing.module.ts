@@ -22,7 +22,7 @@ const routes: Routes = [
     loadChildren: () => import('./daftarberita/daftarberita.module').then( m => m.DaftarberitaPageModule)
   },
   {
-    path: 'bacaberita',
+    path: 'bacaberita/:id',
     loadChildren: () => import('./bacaberita/bacaberita.module').then( m => m.BacaberitaPageModule)
   },
   {
@@ -32,7 +32,8 @@ const routes: Routes = [
   {
     path: 'register',
     loadChildren: () => import('./register/register.module').then( m => m.RegisterPageModule)
-  },  {
+  },
+  {
     path: 'newcategory',
     loadChildren: () => import('./newcategory/newcategory.module').then( m => m.NewcategoryPageModule)
   },

@@ -1,87 +1,87 @@
 // bikin card menjadi patokan untuk posisi absolut
 ion-card {
-    position: relative;
-  }
-  
-  // Mengatur posisi ikon favorit
-  .favorite-icon {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    z-index: 10; // biar ikon selalu di atas gambar
-  
-    ion-icon {
-      font-size: 28px; // bikin ikon lebih besar
-    }
-  }
+  position: relative;
+}
 
-  news-card {
-    position: relative; // Penting untuk positioning ikon favorit
-    margin: 0 0 16px 0; // Menambahkan jarak di bawah setiap kartu
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08); // Bayangan yang lebih lembut
-    cursor: pointer;
-  }
+// Mengatur posisi ikon favorit
+.favorite-icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 10; // biar ikon selalu di atas gambar
 
-  ion-list{
-    background: transparent;
+  ion-icon {
+    font-size: 28px; // bikin ikon lebih besar
   }
+}
 
-  .card-header-container{
-    display: flex; // buat flex teksnya bair bisa muncul di sampingnya
-    align-items: flex-start;
-    padding: 16px; // padding kartunya
-    gap:16px; // buat jarak antara gambar sm teks
-  }
+.news-card {
+  position: relative; // Penting untuk positioning ikon favorit
+  margin: 0 0 16px 0; // Menambahkan jarak di bawah setiap kartu
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08); // Bayangan yang lebih lembut
+  cursor: pointer;
+}
 
-  .news-thumbnail{
-    --size:135px; //ukuran gambar yg fix
-    --border-radius:8px; // biar sudutnya agak bunder
-    flex-shrink:0; // biar gambar tidak menyusut
-  }
+ion-list{
+  background: transparent;
+}
 
-  .views-container{
-    margin-top: 8px;
-    font-size: 0.75rem;
-    display: flex;
-    gap: 8px;
-    color: var(--ion-color-medium);
-    align-items: center;
-  }
+.card-header-container{
+  display: flex; // buat flex teksnya bair bisa muncul di sampingnya
+  align-items: flex-start;
+  padding: 16px; // padding kartunya
+  gap:16px; // buat jarak antara gambar sm teks
+}
 
-  
+.news-thumbnail{
+  --size:135px; //ukuran gambar yg fix
+  --border-radius:8px; // biar sudutnya agak bunder
+  flex-shrink:0; // biar gambar tidak menyusut
+}
 
-  .text-content{
-    flex: 1; //ambil sisa ruang
-  }
+.views-container{
+  margin-top: 8px;
+  font-size: 0.75rem;
+  display: flex;
+  gap: 8px;
+  color: var(--ion-color-medium);
+  align-items: center;
+}
 
-  .news-title{
-    padding-bottom:4px;
-    font-size: 1.25rem;
-    font-weight: 600;
-    line-height: 1.4;
-    // kalo misal teksnya terlalu panjang
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    -overflow: hidden;
-  }
 
-  .news-content {
-    padding: 5px 16px 16px 1px;
-    font-size: 1rem;
-  }
 
-  .rate {
-    margin-top: 8px;
-    display: flex;
-    align-items: center;
-    font-size: 0.8rem;
-    gap: 7px; // Jarak antara ikon bintang dan teksnya
-  }
-  
-  .comments {
-    margin-top:8px;
-    display: flex;
-    align-items: center;
-    gap: 4px; // Jarak antara ikon komentar dan teksnya
-  }
+.text-content{
+  flex: 1; //ambil sisa ruang
+}
+
+.news-title{
+  padding-bottom:4px;
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.4;
+  // kalo misal teksnya terlalu panjang
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  -overflow: hidden;
+}
+
+.news-content {
+  padding: 5px 16px 16px 1px;
+  font-size: 1rem;
+}
+
+.rate {
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  font-size: 0.8rem;
+  gap: 7px; // Jarak antara ikon bintang dan teksnya
+}
+
+.comments {
+  margin-top:8px;
+  display: flex;
+  align-items: center;
+  gap: 4px; // Jarak antara ikon komentar dan teksnya
+}
