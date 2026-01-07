@@ -35,7 +35,7 @@ export class FavDexie extends Dexie {
   //ambil semua daftar id fav
   async getAllFavorites(): Promise<number[]> {
     const allFavs = await this.favorites.toArray();
-    return allFavs.map(f => f.newsId);
+    return allFavs.map((f: FavoriteBerita) => f.newsId);
   }
 }
 

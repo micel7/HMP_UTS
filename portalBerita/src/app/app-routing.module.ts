@@ -36,7 +36,11 @@ const routes: Routes = [
   {
     path: 'newcategory',
     loadChildren: () => import('./newcategory/newcategory.module').then( m => m.NewcategoryPageModule)
+  },  {
+    path: 'newberita',
+    loadChildren: () => import('./newberita/newberita.module').then( m => m.NewberitaPageModule)
   },
+
 
 
 

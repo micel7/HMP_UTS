@@ -1,0 +1,51 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/category"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Tambah Berita Baru</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-list>
+    <ion-item>
+      <ion-label position="floating">Judul Berita</ion-label>
+      <ion-input [(ngModel)]="judul"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Deskripsi / Konten</ion-label>
+      <ion-textarea [(ngModel)]="deskripsi" rows="6"></ion-textarea>
+    </ion-item>
+    
+    <ion-item>
+      <ion-label>Pilih Kategori</ion-label>
+      <ion-select [(ngModel)]="kategoriTerpilih" placeholder="Pilih">
+        <ion-select-option *ngFor="let c of daftarKategori" [value]="c.id">
+          {{ c.nama_kategori }}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item-group>
+      <ion-item-divider><ion-label>Gambar Konten</ion-label></ion-item-divider>
+      <ion-item>
+        <ion-label position="floating">URL Cover Berita</ion-label>
+        <ion-input [(ngModel)]="foto_utama"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input placeholder="Masukkan URL Gambar" [(ngModel)]="gambarTambahan"></ion-input>
+        <ion-button slot="end" (click)="tambahGambar()">Tambah</ion-button>
+      </ion-item>
+      <ion-item *ngFor="let img of listGambar; let i = index">
+        <ion-label>{{ img }}</ion-label>
+        <ion-button color="danger" fill="clear" (click)="listGambar.splice(i, 1)">Hapus</ion-button>
+      </ion-item>
+    </ion-item-group>
+  </ion-list>
+
+  <ion-button expand="block" class="ion-margin-top" (click)="simpanBerita()">
+    Upload Berita
+  </ion-button>
+</ion-content>
