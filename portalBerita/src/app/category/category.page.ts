@@ -24,10 +24,20 @@ export class CategoryPage implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.beritaService.dataBerita$.subscribe(data => {
+      this.daftarBerita = data;
+    });
     this.loadKategori();
   }
 
+  ionViewWillEnter() {
+    //this.loadBerita();
+    this.beritaService.getBerita().subscribe();
+  }
+
   loadKategori() {
+    this.beritaService.getBerita().subscribe();
+
     // Panggil method dari folder services
     this.kategoriService.getCategories().subscribe(
       (response) => {
@@ -38,6 +48,9 @@ export class CategoryPage implements OnInit {
         console.error('Gagal mengambil kategori:', error);
       }
     );
+  }
+
+  loadBerita() {
     this.beritaService.getBerita().subscribe(
       (response: any) => {
         console.log('Data Berita dari DB:', response.data);

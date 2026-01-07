@@ -36,10 +36,58 @@ export class NewberitaPage implements OnInit {
 
 
   tambahGambar(){
-
+    if(this.gambarTambahan.trim() !== "") {
+      this.listGambar.push(this.gambarTambahan.trim());
+      this.gambarTambahan = "";
+    }
   }
 
-  simpanBerita(){
-    
+  async simpanBerita(){
+    if(!this.judul || !this.deskripsi || !this.foto_utama || this.kategoriTerpilih.length === 0) {
+      const toast = await this.toastCtrl.create({
+        message: "Harap lengkapi semua data (judul, konten, foto utama, dan kategori)!",
+        duration: 2000,
+        color: "warning"
+      });
+      toast.present();
+      return;
+    }
+
+    const beritaData = {
+      judul: this.judul,
+      deskripsi: this.deskripsi,
+      foto_utama: this.foto_utama,
+      kategori_id: this.kategoriTerpilih,
+      gambar_tambahan: this.listGambar
+    };
+
+    //panggil addBerita dari service
+    this.beritaService.addBerita(this.judul, this.deskripsi, this.foto_utama, this.kategoriTerpilih, this.listGambar).subscribe({next: async (res: any) => {
+      if(res.result === 'success') {
+        const toast = await this.toastCtrl.create({
+          message: "Berita berhasil disimpan!",
+          duration: 2000,
+          color: "success"
+        });
+        toast.present();
+        this.navCtrl.navigateRoot('/home/category');
+      } else {
+        const toast = await this.toastCtrl.create({
+          message: "Gagal menyimpan berita!" + res.message,
+          duration: 2000,
+          color: "danger"
+        });
+        toast.present();
+      }
+    }, error: async (err) => {
+        console.error('Error saat menyimpan berita:', err);
+        const toast = await this.toastCtrl.create({
+          message: "Terjadi kesalahan koneksi ke server.",
+          duration: 2000,
+          color: "danger"
+        });
+        toast.present();
+      }
+    });
   }
 }

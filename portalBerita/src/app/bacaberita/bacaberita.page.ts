@@ -26,6 +26,7 @@ export class BacaberitaPage implements OnInit {
 
   // Simpan langganan agar bisa dimatikan saat pindah halaman (cegah memory leak)
   private dataSub: Subscription | undefined;
+  public totalKomentar: number = 0;
 
   ngOnInit() {
     // Dengarkan perubahan pada parameter URL
@@ -48,35 +49,12 @@ export class BacaberitaPage implements OnInit {
           }
         });
 
-        this.dataSub = this.beritaService.dataBerita$.subscribe(list => {
-          const found = list.find(b => b.id === beritaId);
-          if (found) {
-            // Kita buat salinan objek agar tidak merusak data asli di service
-            this.selectedBerita = { ...found };
-            
-            // KONVERSI: Ubah daftar komentar lurus dari DB menjadi struktur pohon (replies)
-            if(found.komentar) {
-              this.selectedBerita.komentar = this.buildTree(found.komentar);
-            } 
-          }
-          else {
-            this.beritaService.getBeritaById(beritaId).subscribe((res: any) => {
-              if(res.result === 'success' && res.data) {
-                const dataNews = Array.isArray(res.data) ? res.data[0] : res.data;
+        this.beritaService.getBeritaById(beritaId).subscribe((res: any) => {
+          if(res.result === 'success' && res.data) {
+            const dataNews = Array.isArray(res.data) ? res.data[0] : res.data;
+            this.selectedBerita = { ...dataNews };
 
-                if (dataNews) {
-                  this.selectedBerita = dataNews;
-
-                  if(dataNews.has_rated > 0) {
-                    this.ratingSubmitted = true;
-                    this.userRating = dataNews.user_rating;
-                  }
-
-                  // KONVERSI: Ubah daftar komentar lurus dari DB menjadi struktur pohon (replies)
-                  this.selectedBerita!.komentar = this.buildTree(dataNews.komentar || []);
-                }
-              }
-            });
+            this.loadComments(beritaId);
           }
         });
       }
@@ -114,7 +92,6 @@ export class BacaberitaPage implements OnInit {
     return roots;
   }
 
-
   onToggleFavorite(berita: Berita, event: Event) {
     // Stop event biar tidak memicu klik pada card
     event.stopPropagation();
@@ -140,13 +117,25 @@ export class BacaberitaPage implements OnInit {
 
   submitComment() {
     if (this.newCommentText.trim() !== '' && this.selectedBerita) {
-      this.beritaService.addComment(
-        this.selectedBerita.id,
-        this.newCommentText
-      );
-      // Kosongkan textarea setelah submit
-      this.newCommentText = '';
+      const newsId = this.selectedBerita.id;
+
+      this.beritaService.addComment(newsId, this.newCommentText).subscribe({next:(res) => {
+        if (res.result === 'OK') {
+          console.log('Komentar berhasil ditambahkan');
+          this.newCommentText = '';
+          this.loadComments(newsId);
+        }
+      }, error: (err) => console.error('Gagal menambahkan komentar:', err)});
     }
+  }
+
+  loadComments(newsId: number) {
+    this.beritaService.getCommentsFromAPI(newsId).subscribe((comments: any) => {
+      if(this.selectedBerita) {
+        this.totalKomentar = comments.length;
+        this.selectedBerita.komentar = this.buildTree(comments);
+      }
+    });
   }
 
   toggleReplyForm(commentId: number) {
@@ -157,6 +146,33 @@ export class BacaberitaPage implements OnInit {
       // Jika belum, buka form balasan untuk komentar ini.
       this.replyingToCommentId = commentId;
       this.replyText = ''; // Kosongkan input field
+    }
+  }
+
+  submitReply(parentId: number) {
+    if (this.selectedBerita && this.replyText.trim() !== '') {
+      const newsId = this.selectedBerita.id;
+
+      this.beritaService.addComment(newsId, this.replyText, parentId).subscribe({next:(res) => {
+        if (res.result === 'OK') {
+          console.log('Balasan berhasil ditambahkan');
+          this.replyingToCommentId = null;
+          this.replyText = '';
+          this.loadComments(newsId);
+        }
+      }, error: (err) => console.error('Gagal menambahkan balasan:', err)});
+    }
+  }
+}
+
+/* code lama
+  submitComment() {
+    this.beritaService.addComment(
+        this.selectedBerita.id,
+        this.newCommentText
+      );
+      // Kosongkan textarea setelah submit
+      this.newCommentText = '';
     }
   }
 
@@ -174,6 +190,4 @@ export class BacaberitaPage implements OnInit {
       this.replyText = '';
     }
   }
-
-
-}
+*/

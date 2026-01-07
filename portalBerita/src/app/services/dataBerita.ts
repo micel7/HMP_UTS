@@ -29,7 +29,10 @@ export class Databerita {
                 BERITA
     ================================*/
   getBerita(query: string=''): Observable<any> {
-    const url = query ? `${this.apiUrlNews}?search=${encodeURIComponent(query)}` : this.apiUrlNews;
+    const timestamp = new Date().getTime();
+    const baseUrl = query ? `${this.apiUrlNews}?search=${encodeURIComponent(query)}` : this.apiUrlNews;
+    const separator = baseUrl.includes('?') ? '&' : '?';
+    const url = `${baseUrl}${separator}t=${timestamp}`;
 
     return this.http.get<any>(url).pipe(
       tap(async (response: any) => {
@@ -56,6 +59,12 @@ export class Databerita {
   }
 
   getBeritaById(id: number): Observable<any> {
+    const index = this.dataBerita.findIndex(b => b.id === id);
+    if(index !== -1) {
+      this.dataBerita[index].views++;
+      this._dataBeritaSubject.next([...this.dataBerita]); // Update subject agar komponen yg subscribe ter-update
+    }
+
     //cari dan kembalikan berita yg idnya sesuai
     return this.http.get(this.apiUrlNews + '?id=' + id);
   }
@@ -154,20 +163,7 @@ export class Databerita {
       .set('parent_id', parentId ? parentId.toString() : '');
 
     // Mengirim data menggunakan POST ke PHP
-    this.http.post<any>(this.apiUrlComment, body, {
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-    }).subscribe({
-      next: (res) => {
-        if (res.result === 'OK') {
-          console.log('Komentar berhasil disimpan ke DB');
-          // Setelah sukses di DB, kita refresh data lokal agar UI ter-update
-          this.refreshCommentsLocal(newsId);
-        } else {
-          console.error('Server menolak komentar:', res.message);
-        }
-      },
-      error: (err) => console.error('Error koneksi API:', err)
-    });
+    return this.http.post<any>(this.apiUrlComment, body, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' }});
   }
 
   private refreshCommentsLocal(newsId: number){
@@ -183,6 +179,21 @@ export class Databerita {
 }
 
   /*
+
+  //add comment nya stip
+  .subscribe({
+      next: (res) => {
+        if (res.result === 'OK') {
+          console.log('Komentar berhasil disimpan ke DB');
+          // Setelah sukses di DB, kita refresh data lokal agar UI ter-update
+          this.refreshCommentsLocal(newsId);
+        } else {
+          console.error('Server menolak komentar:', res.message);
+        }
+      },
+      error: (err) => console.error('Error koneksi API:', err)
+    });
+
   incrementViews(id: number): void {
     const beritaById = this.dataBerita.find(b => b.id === id);
     if(beritaById) {

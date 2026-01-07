@@ -25,23 +25,17 @@ export class DaftarberitaPage implements OnInit {
     this.routeSub = this.route.paramMap.subscribe(params => {
       // Cek parameter di URL
       const kategoriTerpilih = params.get('kategori');
-      this.loadData(kategoriTerpilih);
-    });
-  }
 
-  loadData(kategori: string | null) {
-    this.beritaService.getBerita().subscribe((res: any) => {
-      if(res.result === 'success') {
-        const semuaBerita:Berita[] = res.data;
-        
-        if(kategori) {
-          this.judulHalaman = `Kategori: ${kategori}`;
-          this.daftarBerita = semuaBerita.filter(berita => berita.categories && berita.categories.includes(kategori));
+      this.beritaService.dataBerita$.subscribe(semuaBerita => {
+        if(kategoriTerpilih) {
+          this.judulHalaman = `Kategori: ${kategoriTerpilih}`;
+          this.daftarBerita = semuaBerita.filter(berita => berita.categories && berita.categories.includes(kategoriTerpilih));
         } else {
           this.judulHalaman = 'Semua Berita';
           this.daftarBerita = semuaBerita;
         }
-      }
+      });
+      this.beritaService.getBerita().subscribe();
     });
   }
 
@@ -72,6 +66,25 @@ export class DaftarberitaPage implements OnInit {
 
 /*
   // code sebelum ada API
+
+  // loadData(kategori: string | null) {
+  //   this.beritaService.getBerita().subscribe((res: any) => {
+  //     if(res.result === 'success') {
+  //       const semuaBerita:Berita[] = res.data;
+        
+  //       if(kategori) {
+  //         this.judulHalaman = `Kategori: ${kategori}`;
+  //         this.daftarBerita = semuaBerita.filter(berita => berita.categories && berita.categories.includes(kategori));
+  //       } else {
+  //         this.judulHalaman = 'Semua Berita';
+  //         this.daftarBerita = semuaBerita;
+  //       }
+  //     }
+  //   });
+  // }
+
+   //this.loadData(kategoriTerpilih);
+
   ngOnInit() {
     // Cek parameter di URL
     const kategoriTerpilih = this.route.snapshot.paramMap.get('kategori');

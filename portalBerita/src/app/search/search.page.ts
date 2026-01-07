@@ -19,8 +19,8 @@ export class SearchPage implements OnInit {
 
   ngOnInit() {
     this.dataBerita.getBerita().subscribe((data: any) => {
-      if(data.result === 'success') {
-        this.allBerita = data.berita;
+      if(data.result === 'success' && data.data) {
+        this.allBerita = data.data;
       }
     });
   }
@@ -34,8 +34,10 @@ export class SearchPage implements OnInit {
 
       //Langsung pake API
       this.dataBerita.getBerita(query).subscribe((data: any) => {
-        if(data.result === 'success') {
-          this.filteredBerita = data.berita;
+        if(data.result === 'success' && data.data) {
+          this.filteredBerita = data.data;
+        } else {
+          this.filteredBerita = [];
         }
       });
     } else {
