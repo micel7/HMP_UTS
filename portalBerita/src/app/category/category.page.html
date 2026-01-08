@@ -39,6 +39,15 @@
       <div class="favorite-icon" (click)="onToggleFavorite(berita, $event)">
         <ion-icon name="heart" color="danger" *ngIf="berita.isFavorite"></ion-icon>
         <ion-icon name="heart-outline" color="medium" *ngIf="!berita.isFavorite"></ion-icon>
+
+        <ion-button 
+          *ngIf="beritaService.dataUser.loggedInUser?.userId == berita.user_id || beritaService.dataUser.loggedInUser?.userId == 1" 
+          color="danger" 
+          expand="block" 
+          (click)="hapusBeritaIni(berita, $event)"
+          class="delete-btn">
+          <ion-icon name="trash" slot="start"></ion-icon>
+        </ion-button>
       </div>
 
       <ion-card-content class="news-content" > 

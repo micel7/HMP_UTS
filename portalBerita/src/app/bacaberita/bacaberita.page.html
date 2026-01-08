@@ -119,6 +119,17 @@
 
     </div>
   </div>
-    
+
+  <div class="delete-button-container">
+    <ion-button 
+      *ngIf="selectedBerita && (beritaService.dataUser.loggedInUser?.userId == selectedBerita.user_id || beritaService.dataUser.loggedInUser?.userId == 1)" 
+      color="danger" 
+      expand="block" 
+      (click)="hapusBeritaIni()" 
+      class="delete-button">
+      <ion-icon name="trash" slot="start"></ion-icon>
+      Hapus Berita
+    </ion-button>
+  </div>
 
   </ion-content>

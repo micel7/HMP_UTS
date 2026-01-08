@@ -4,6 +4,7 @@ import { Berita } from '../models/berita.model';
 import { Databerita } from '../services/dataBerita';
 import { Subscription } from 'rxjs';
 import { Komentar } from '../models/komentar.model';
+import { AlertController, NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-bacaberita',
@@ -16,7 +17,9 @@ export class BacaberitaPage implements OnInit {
   selectedBerita: Berita | undefined;
   constructor(
     private route: ActivatedRoute, // Inject ActivatedROute dipake buat baca URL
-    private beritaService: Databerita
+    public beritaService: Databerita,
+    private alertCtrl: AlertController,
+    private navCtrl: NavController
   ) {}
   userRating: number = 0; // buat simpen rating pilihan user (1-5)
   ratingSubmitted: boolean = false; // buat menandai jika user sudah submit, true = udah | false = belum
@@ -59,6 +62,32 @@ export class BacaberitaPage implements OnInit {
         });
       }
     });
+  }
+
+  async hapusBeritaIni() {
+    if(!this.selectedBerita) return;
+
+    const alert = await this.alertCtrl.create({
+      header: 'Konfirmasi',
+      message: 'Apakah Anda yakin ingin menghapus berita ini?',
+      buttons: [
+        { text: 'Batal', role: 'cancel' },
+        {
+          text: 'Hapus',
+          handler: () => {
+            this.beritaService.deleteBerita(this.selectedBerita!.id).subscribe((res: any) => {
+              if(res.result === 'success') {
+                console.log('Berita berhasil dihapus');
+                this.beritaService.getBerita().subscribe();
+                this.navCtrl.navigateRoot('/home/category');
+              } else {
+                console.error('Gagal menghapus berita:', res.message);
+              }
+          }
+        )}
+      }]
+    });
+    await alert.present();
   }
 
   private buildTree(flatComments: Komentar[]): Komentar[] {

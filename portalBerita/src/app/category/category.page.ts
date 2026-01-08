@@ -4,6 +4,7 @@ import { Databerita } from '../services/dataBerita';
 import { Berita } from '../models/berita.model';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AlertController, ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-category',
@@ -19,8 +20,10 @@ export class CategoryPage implements OnInit {
 
   constructor(
     private kategoriService: Kategori,
-    private beritaService: Databerita,
-    private router: Router
+    public beritaService: Databerita,
+    private router: Router,
+    private alertCtrl: AlertController,
+    private toastCtrl: ToastController
   ) { }
 
   ngOnInit() {
@@ -66,6 +69,35 @@ export class CategoryPage implements OnInit {
     this.router.navigate(['/daftarberita', Category.nama_kategori]);
   }
 
+  async hapusBeritaIni(berita:any, event: Event) {
+    event.stopPropagation(); // Mencegah event bubbling
+    
+    const alert = await this.alertCtrl.create({
+      header: 'Hapus Berita?',
+      message: 'Apakah Anda yakin ingin menghapus berita ini?',
+      buttons: [ {text: 'Batal', role: 'cancel'}, 
+        {
+          text: 'Hapus',
+          handler: () => {
+            this.beritaService.deleteBerita(berita.id).subscribe({next: async (res: any) => {
+              if(res.result === 'success') {
+                const toast = await this.toastCtrl.create({
+                  message: "Berita berhasil dihapus.",
+                  duration: 2000,
+                  color: "success"
+                });
+                toast.present();
+
+                this.ionViewWillEnter(); // Refresh daftar berita
+              }
+            }
+          });
+        }
+      }
+    ]
+  });
+  await alert.present();
+}
   /*  Average udah di handle di Querry
   getRataRataRating(rating: number[]): number {
     if (!rating || rating.length === 0) return 0; //kalau tidak ada rating return 0

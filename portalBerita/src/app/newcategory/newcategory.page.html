@@ -14,14 +14,43 @@
   </ion-item>
 
   <ion-item>
-    <ion-label position="floating">Url Ikon</ion-label>
+    <ion-label position="floating">Nama Ikon</ion-label>
     <ion-input type="text" [(ngModel)]="icon_baru"></ion-input>
   </ion-item>
 
   <ion-item>
     <ion-label position="floating">Warna</ion-label>
-    <ion-input type="text" [(ngModel)]="color_baru"></ion-input>
+    <ion-select [(ngModel)]="color_baru" placeholder="Pilih Warna" interface="popover">
+      <ion-select-option value="primary">Biru (Primary)</ion-select-option>
+      <ion-select-option value="secondary">Biru Muda (Secondary)</ion-select-option>
+      <ion-select-option value="tertiary">Ungu (Tertiary)</ion-select-option>
+      <ion-select-option value="success">Hijau (Success)</ion-select-option>
+      <ion-select-option value="warning">Kuning (Warning)</ion-select-option>
+      <ion-select-option value="danger">Merah (Danger)</ion-select-option>
+      <ion-select-option value="dark">Hitam (Dark)</ion-select-option>
+      <ion-select-option value="medium">Abu-abu (Medium)</ion-select-option>
+    </ion-select>
   </ion-item>
+
+  <div class="ion-padding-top ion-margin-top" style="border-top: 1px solid #ddd;">
+    <ion-label color="medium"><b>Preview Hasil Jadi:</b></ion-label>
+    
+    <div class="ion-margin-top ion-text-center">
+      <ion-chip [color]="color_baru">
+        <ion-avatar *ngIf="icon_baru && icon_baru.startsWith('http')">
+          <img [src]="icon_baru" />
+        </ion-avatar>
+        
+        <ion-icon *ngIf="icon_baru && !icon_baru.startsWith('http')" [name]="icon_baru"></ion-icon>
+        
+        <ion-label>{{ nama_baru || 'Nama Kategori' }}</ion-label>
+      </ion-chip>
+    </div>
+
+    <p class="ion-text-center" style="font-size: 0.8em; color: gray;">
+      Warna: {{ color_baru }} | Icon: {{ icon_baru || 'Belum diisi' }}
+    </p>
+  </div>
 
   <ion-button expand="block" (click)="simpanKategori()" class="ion-margin-top">
     Tambah Kategori

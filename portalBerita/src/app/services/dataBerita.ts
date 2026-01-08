@@ -20,7 +20,7 @@ export class Databerita {
   private dataBerita: Berita[] = [];
   //public userServiceName:string | null = null;
 
-  constructor(private http: HttpClient, private dataUser: Datauser, private favDexie: FavDexie) {
+  constructor(private http: HttpClient, public dataUser: Datauser, private favDexie: FavDexie) {
     this._dataBeritaSubject = new BehaviorSubject<Berita[]>(this.dataBerita);
     this.dataBerita$ = this._dataBeritaSubject.asObservable();
   }
@@ -70,7 +70,7 @@ export class Databerita {
   }
 
   addBerita(judul: string, deskripsi: string, fotoUtama: string, categories: number[], images: string[]): Observable<any> {
-    const header = new HttpHeaders({'Content-Type': 'application/x-www-form-urlencoded',});
+    const headers = new HttpHeaders({'Content-Type': 'application/x-www-form-urlencoded',});
     const body = new URLSearchParams();
 
     body.set('user_id', this.dataUser.loggedInUser?.userId?.toString() || '0');
@@ -81,7 +81,20 @@ export class Databerita {
     body.set('images', JSON.stringify(images));
     
     const urlEncodedData = body.toString();
-    return this.http.post('https://ubaya.cloud/hybrid/160423076/projectHMP/add_news.php', urlEncodedData, { headers: header });
+    return this.http.post('https://ubaya.cloud/hybrid/160423076/projectHMP/add_news.php', urlEncodedData, { headers });
+  }
+
+  deleteBerita(newsId: number): Observable<any> {
+    const headers = new HttpHeaders({'Content-Type': 'application/x-www-form-urlencoded',});
+    const body = new URLSearchParams();
+
+    const currentUserId = this.dataUser.loggedInUser?.userId?.toString() || '0';
+
+    body.set('news_id', newsId.toString());
+    body.set('user_id', currentUserId);
+
+    const urlEncodedData = body.toString();
+    return this.http.post('https://ubaya.cloud/hybrid/160423076/projectHMP/delete_news.php', urlEncodedData, { headers });
   }
 
 /* ================================

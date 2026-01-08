@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/category"></ion-back-button>
+      <ion-back-button defaultHref="/home/category"></ion-back-button>
     </ion-buttons>
     <ion-title>Tambah Berita Baru</ion-title>
   </ion-toolbar>
@@ -21,7 +21,7 @@
     
     <ion-item>
       <ion-label>Pilih Kategori</ion-label>
-      <ion-select [(ngModel)]="kategoriTerpilih" placeholder="Pilih">
+      <ion-select [(ngModel)]="kategoriTerpilih" placeholder="Pilih" multiple="true">
         <ion-select-option *ngFor="let c of daftarKategori" [value]="c.id">
           {{ c.nama_kategori }}
         </ion-select-option>
