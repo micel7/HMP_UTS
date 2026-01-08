@@ -15,7 +15,23 @@
 
   <ion-item>
     <ion-label position="floating">Nama Ikon</ion-label>
-    <ion-input type="text" [(ngModel)]="icon_baru"></ion-input>
+    <ion-input 
+      type="text" 
+      [(ngModel)]="icon_baru"
+      (ionInput)="filterIcons($event)"
+      (ionFocus)="isDropdownIconOpen=true"
+      (ionBlur)="closeDropdown()">
+    </ion-input>
+    <ion-icon [name]="icon_baru" slot="end" *ngIf="icon_baru"></ion-icon>
+
+    <div class="icon-suggestion-container" *ngIf="isDropdownIconOpen && filteredIcons.length > 0">
+      <ion-list class="suggestion-list">
+        <ion-item button *ngFor="let icon of filteredIcons" (click)="selectIcon(icon)">
+          <ion-icon [name]="icon" slot="start" color="warning"></ion-icon>
+          <ion-label>{{ icon }}</ion-label>
+        </ion-item>
+      </ion-list>
+    </div>
   </ion-item>
 
   <ion-item>
@@ -55,4 +71,5 @@
   <ion-button expand="block" (click)="simpanKategori()" class="ion-margin-top">
     Tambah Kategori
   </ion-button>
+
 </ion-content>

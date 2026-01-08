@@ -153,6 +153,8 @@ export class BacaberitaPage implements OnInit {
           console.log('Komentar berhasil ditambahkan');
           this.newCommentText = '';
           this.loadComments(newsId);
+
+          this.beritaService.getBerita().subscribe(); // Refresh data berita setelah penambahan komentar
         }
       }, error: (err) => console.error('Gagal menambahkan komentar:', err)});
     }

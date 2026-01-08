@@ -64,6 +64,8 @@ export class NewberitaPage implements OnInit {
     //panggil addBerita dari service
     this.beritaService.addBerita(this.judul, this.deskripsi, this.foto_utama, this.kategoriTerpilih, this.listGambar).subscribe({next: async (res: any) => {
       if(res.result === 'success') {
+        this.beritaService.getBerita().subscribe(); // Refresh data berita setelah penambahan
+
         const toast = await this.toastCtrl.create({
           message: "Berita berhasil disimpan!",
           duration: 2000,

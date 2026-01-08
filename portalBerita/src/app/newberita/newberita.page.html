@@ -30,16 +30,21 @@
 
     <ion-item-group>
       <ion-item-divider><ion-label>Gambar Konten</ion-label></ion-item-divider>
+
       <ion-item>
-        <ion-label position="floating">URL Cover Berita</ion-label>
-        <ion-input [(ngModel)]="foto_utama"></ion-input>
+        <ion-label position="floating">URL Foto Cover Berita</ion-label>
+        <ion-input [(ngModel)]="foto_utama" placeholder="https://..."></ion-input>
+        <ion-img [src]="foto_utama" *ngIf="foto_utama" style="width: 350px; height: auto;"/>
       </ion-item>
+
       <ion-item>
         <ion-input placeholder="Masukkan URL Gambar" [(ngModel)]="gambarTambahan"></ion-input>
         <ion-button slot="end" (click)="tambahGambar()">Tambah</ion-button>
       </ion-item>
+
       <ion-item *ngFor="let img of listGambar; let i = index">
         <ion-label>{{ img }}</ion-label>
+        <ion-img [src]="img" *ngIf="img" style="width: 350px; height: auto; padding-right: 10px;"/>
         <ion-button color="danger" fill="clear" (click)="listGambar.splice(i, 1)">Hapus</ion-button>
       </ion-item>
     </ion-item-group>
