@@ -19,58 +19,57 @@
 <ion-content>
 <div *ngIf="jenistampilan === 'forYou'">
   <ion-list [inset]="true">
-    <ion-card *ngFor="let berita of daftarBerita" class="news-card" (click)="bacaBerita(berita.id)">
-
+    <ion-item-sliding *ngFor="let berita of daftarBerita" #slidingItem>
+      <ion-item lines="none" class="news-item-container" (click)="bacaBerita(berita.id)">
+        <ion-card class="news-card">
         <!-- GAMBAR, JUDUL, BINTANG FAVORIT -->
-      <div class="card-header-container">
+        <div class="card-header-container">
           <!-- Wadah buat naruh gambar di kiri -->
           <ion-thumbnail class="news-thumbnail">
             <ion-img [src]="berita.foto" alt="Foto untuk {{ berita.judul }}"></ion-img>
           </ion-thumbnail>
           
-        <div class="text-content" >
-          <ion-card-title class="news-title">{{berita.judul}}</ion-card-title>
-          <ion-card-subtitle>{{berita.categories}}</ion-card-subtitle>
-          <p class="news-content">{{berita.konten | slice:0:120}}...</p>
+        <div class="text-content">
+            <ion-card-title class="news-title">{{berita.judul}}</ion-card-title>
+            <ion-card-subtitle>{{berita.categories}}</ion-card-subtitle>
+            <p class="news-content">{{berita.konten | slice:0:120}}...</p>
         </div>
       </div>
 
       <!-- Ikon Favorit yang Diposisikan di Pojok -->
-      <div class="favorite-icon" (click)="onToggleFavorite(berita, $event)">
-        <ion-icon name="heart" color="danger" *ngIf="berita.isFavorite"></ion-icon>
-        <ion-icon name="heart-outline" color="medium" *ngIf="!berita.isFavorite"></ion-icon>
-
-        <ion-button 
-          *ngIf="beritaService.dataUser.loggedInUser?.userId == berita.user_id || beritaService.dataUser.loggedInUser?.userId == 1" 
-          color="danger" 
-          expand="block" 
-          (click)="hapusBeritaIni(berita, $event)"
-          class="delete-btn">
-          <ion-icon name="trash" slot="start"></ion-icon>
-        </ion-button>
-      </div>
-
-      <ion-card-content class="news-content" > 
-        
-        <div class="views-container">
-            <ion-icon name="eye-outline" color="medium"></ion-icon>
-            <ion-note>{{ berita.views || 0 }} views</ion-note>
+        <div class="favorite-icon" (click)="onToggleFavorite(berita, $event)">
+            <ion-icon name="heart" color="danger" *ngIf="berita.isFavorite"></ion-icon>
+            <ion-icon name="heart-outline" color="medium" *ngIf="!berita.isFavorite"></ion-icon>
         </div>
 
-        <div class="rate">
-          <ion-icon name="star" color="warning"></ion-icon>
-          <ion-note>{{ (berita.rating || 0) | number:'1.1-1' }} / 5</ion-note>
-        </div>
+      <ion-card-content class="news-stats-container"> 
+          <div class="views-container">
+              <ion-icon name="eye-outline" color="medium"></ion-icon>
+              <ion-note>{{ berita.views || 0 }} views</ion-note>
+          </div>
+          <div class="rate">
+            <ion-icon name="star" color="warning"></ion-icon>
+            <ion-note>{{ (berita.rating || 0) | number:'1.1-1' }} / 5</ion-note>
+          </div>
+          <div class="comments">
+            <ion-icon name="chatbubble-outline"></ion-icon>
+            <ion-note>{{ berita.jumlah_komentar || 0 }} komentar</ion-note>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </ion-item>
 
-        <div class="comments">
-          <ion-icon name="chatbubble-outline"></ion-icon>
-          <ion-note>{{ berita.jumlah_komentar || 0 }} komentar</ion-note>
-        </div>
+    <ion-item-options side="end">
+      <ion-item-option color="danger" 
+        *ngIf="beritaService.dataUser.loggedInUser?.userId == berita.user_id || beritaService.dataUser.loggedInUser?.userId == 1"
+        (click)="hapusBeritaIni(berita, $event); slidingItem.close()">
+        <ion-icon slot="icon-only" name="trash"></ion-icon>
+      </ion-item-option>
+    </ion-item-options>
 
-      </ion-card-content>
-    </ion-card>
-  </ion-list>
-  </div>
+  </ion-item-sliding>
+</ion-list>
+</div>
 
   <div *ngIf="jenistampilan === 'category'">
     <div class="welcome-text">
