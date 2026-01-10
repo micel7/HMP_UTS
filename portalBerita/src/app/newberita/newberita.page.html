@@ -42,11 +42,21 @@
         <ion-button slot="end" (click)="tambahGambar()">Tambah</ion-button>
       </ion-item>
 
-      <ion-item *ngFor="let img of listGambar; let i = index">
-        <ion-label>{{ img }}</ion-label>
-        <ion-img [src]="img" *ngIf="img" style="width: 350px; height: auto; padding-right: 10px;"/>
-        <ion-button color="danger" fill="clear" (click)="listGambar.splice(i, 1)">Hapus</ion-button>
-      </ion-item>
+      <div *ngFor="let img of listGambar; let i = index" class="ion-margin-top" style="border: 1px solid #ddd; border-radius: 8px; overflow: hidden;">
+        <ion-item lines="none">
+          <ion-label>Detail Gambar {{ i + 1 }}</ion-label>
+          <ion-button slot="end" color="danger" fill="clear" (click)="listGambar.splice(i, 1)">
+            <ion-icon name="trash-outline"></ion-icon>
+          </ion-button>
+        </ion-item>
+
+        <div style="padding: 0 16px 16px 16px;">
+          <img [src]="img" style="width: 100%; height: auto; border-radius: 4px; display: block;" />
+          <p style="font-size: 0.7em; color: gray; margin-top: 8px; word-break: break-all;">
+            {{ img }}
+          </p>
+        </div>
+      </div>
     </ion-item-group>
   </ion-list>
 

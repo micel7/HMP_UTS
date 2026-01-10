@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Kategori } from '../services/kategori';
 import { Router } from '@angular/router';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-newcategory',
@@ -24,9 +25,9 @@ export class NewcategoryPage implements OnInit {
     // Ekonomi
     'business', 'stats-chart', 'cash', 'wallet', 'pie-chart', 'trending-up',
     // Kesehatan
-    'medkit', 'heart', 'bandage', 'pulse', 'thermometer', 'water',
+    'medkit', 'bandage', 'pulse', 'thermometer', 'water',
     // Entertainment & Game
-    'game-controller', 'musical-notes', 'videocam', 'camera', 'tv', 'film',
+    'game-controller', 'musical-notes', 'videocam', 'tv', 'film',
     // Lifestyle & Travel
     'airplane', 'restaurant', 'fast-food', 'shirt', 'car', 'leaf',
     // Others
@@ -43,7 +44,7 @@ export class NewcategoryPage implements OnInit {
 
   filteredIcons: string[] = [];
 
-  constructor(private kategoriService: Kategori, private router: Router) { }
+  constructor(private kategoriService: Kategori, private router: Router, private navCtrl:NavController) { }
 
   ngOnInit() {
     this.filteredIcons = [];
@@ -57,7 +58,7 @@ export class NewcategoryPage implements OnInit {
     ).subscribe((response: any) => {
       if (response.result === 'success') {
         alert("Kategori Berhasil Ditambah!");
-        this.router.navigate(['/home/category']);
+        this.navCtrl.navigateRoot('/home/category');
       } else {
         alert("Gagal: " + response.message);
       }

@@ -36,6 +36,7 @@ export class CategoryPage implements OnInit {
   ionViewWillEnter() {
     //this.loadBerita();
     this.beritaService.getBerita().subscribe();
+    this.loadKategori();
   }
 
   loadKategori() {

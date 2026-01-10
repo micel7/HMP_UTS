@@ -16,7 +16,10 @@ export class Kategori {
   constructor(private http: HttpClient) { }
 
   getCategories(): Observable<Categories[]> {
-    return this.http.get<any>(this.apiUrl).pipe(
+    const timestamp = new Date().getTime();
+    const urlWithCacheBuster = `${this.apiUrl}?t=${timestamp}`;
+
+    return this.http.get<any>(urlWithCacheBuster).pipe(
       map(response => {
         if (response.result === 'success') {
           return response.data; // Mengambil array kategori dari dalam object
