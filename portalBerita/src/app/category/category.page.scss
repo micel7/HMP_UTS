@@ -1,3 +1,9 @@
+// bikin card menjadi patokan untuk posisi absolut
+ion-card {
+  position: relative;
+  width: 100%;
+}
+
 .favorite-icon {
   position: absolute;
   top: 10px;
@@ -28,13 +34,9 @@
     }
   }
 
-// bikin card menjadi patokan untuk posisi absolut
-ion-card {
-  position: relative;
-}
-
 p{
   padding-bottom:4px;
+  margin: 0;
 }
 
 ion-card-header {
@@ -67,6 +69,8 @@ news-card {
 
 ion-list{
   background: transparent;
+  max-width: 1500px;
+  margin: 0;
 }
 
 .card-header-container{
