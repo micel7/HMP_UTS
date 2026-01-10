@@ -1,6 +1,6 @@
 {
-  "name": "app",
-  "short_name": "app",
+  "name": "Portal Berita Harapan Mami Papi",
+  "short_name": "Portal Berita HMP",
   "theme_color": "#1976d2",
   "background_color": "#fafafa",
   "display": "standalone",
