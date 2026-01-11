@@ -122,10 +122,11 @@ export class BacaberitaPage implements OnInit {
   }
 
   onToggleFavorite(berita: Berita, event: Event) {
-    // Stop event biar tidak memicu klik pada card
     event.stopPropagation();
 
-    // Panggil fungsi 'toggle' dari service dengan mengirim id berita
+    // biar favoritenya berubah value
+    berita.isFavorite = !berita.isFavorite;
+
     this.beritaService.toggleFavoriteStatus(berita.id);
   }
   // buat pilih bintang

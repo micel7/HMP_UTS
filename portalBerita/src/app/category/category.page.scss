@@ -4,6 +4,19 @@ ion-card {
   width: 100%;
 }
 
+ion-item {
+  --padding-start: 0;
+  --padding-end: 0;
+  --inner-padding-start: 0;
+  --inner-padding-end: 0;
+  width: 100%;
+  background: transparent; // hindari latar belakang default
+}
+
+ion-item-sliding {
+  width: 100%;
+}
+
 .favorite-icon {
   position: absolute;
   top: 10px;
@@ -60,7 +73,7 @@ ion-fab-button:active {
 }
 
 
-news-card {
+.news-card {
   position: relative; // Penting untuk positioning ikon favorit
   margin: 0 0 16px 0; // Menambahkan jarak di bawah setiap kartu
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08); // Bayangan yang lebih lembut
@@ -69,7 +82,7 @@ news-card {
 
 ion-list{
   background: transparent;
-  max-width: 1500px;
+  //max-width: 1500px;
   margin: 0;
 }
 

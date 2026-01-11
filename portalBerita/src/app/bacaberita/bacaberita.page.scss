@@ -9,7 +9,7 @@
     top: 10px;
     right: 10px;
     z-index: 10; // biar ikon selalu di atas gambar
-  
+     cursor: pointer; 
     ion-icon {
       font-size: 28px; // bikin ikon lebih besar
     }
@@ -47,3 +47,15 @@
   .comment-date {
     font-size: 11px;
   }
+
+  .news-image-wrapper {
+  position: relative;
+  width: 100%;
+  display: block;
+}
+
+.news-image-wrapper ion-img {
+  width: 100%;
+  display: block;
+  height: auto;
+}
