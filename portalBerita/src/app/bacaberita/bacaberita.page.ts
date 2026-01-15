@@ -118,13 +118,13 @@ export class BacaberitaPage implements OnInit {
       if (parentId && parentId !== 0) {
         const parent = map.get(parentId);
         if (parent) {
-          parent.replies!.push(c);
+          parent.replies!.push(c); // kalau mau ubah biar komen terbaru ada di bawahnya nanti push tinggal diganti unshift
         } else {
           // Jika parent tidak ditemukan, anggap sebagai root
-          roots.push(c);
+          roots.push(c); // ini diganti unshift kalau mau dibalik
         }
       } else {
-        roots.push(c);
+        roots.push(c); // ganti ini ke unshift juga kalau mau dibalik
       }
     });
 
