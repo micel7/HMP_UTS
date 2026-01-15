@@ -52,14 +52,24 @@ export class BacaberitaPage implements OnInit {
           }
         });
 
-        this.beritaService.getBeritaById(beritaId).subscribe((res: any) => {
-          if(res.result === 'success' && res.data) {
+        // ini biar icon hati favorite muncul
+        this.beritaService.getBeritaById(beritaId).subscribe(async (res: any) => {
+          if (res.result === 'success' && res.data) {
+            // Ambil data dari API
             const dataNews = Array.isArray(res.data) ? res.data[0] : res.data;
-            this.selectedBerita = { ...dataNews };
+
+            // Ambil status favorit dari Dexie
+            const statusFavorit = await this.beritaService.checkIsFavorite(beritaId);
+
+            // Gabungkan data berita dari API sama statusFavorite dari Dexie
+            this.selectedBerita = { 
+              ...dataNews, 
+              isFavorite: statusFavorit 
+            };
 
             this.loadComments(beritaId);
           }
-        });
+        }); 
       }
     });
   }

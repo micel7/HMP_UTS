@@ -147,6 +147,11 @@ export class Databerita {
     }
   }
 
+  async checkIsFavorite(id: number): Promise<boolean> {
+    const favIds = await this.favDexie.getAllFavorites(); // ambil data berita favorites
+    return favIds.includes(Number(id));
+}
+
 /* ================================
               COMMENT
   ================================*/ 

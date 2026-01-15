@@ -29,7 +29,7 @@ ion-list{
 .card-header-container{
   display: flex; // buat flex teksnya bair bisa muncul di sampingnya
   align-items: flex-start;
-  padding: 16px; // padding kartunya
+  padding: 16px 40px 16px 16px !important; // padding kartunya biar ga nabrak sama icon fav
   gap:16px; // buat jarak antara gambar sm teks
 }
 
@@ -46,6 +46,7 @@ ion-list{
   gap: 8px;
   color: var(--ion-color-medium);
   align-items: center;
+  margin-left: 16px;
 }
 
 
@@ -59,12 +60,12 @@ ion-list{
   padding-bottom:4px;
   font-size: 1.1rem;
   font-weight: 600;
-  line-height: 1.3;
+  line-height: 1.5;
   // kalo misal teksnya terlalu panjang
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
-  -overflow: hidden;
+  overflow: hidden;
 }
 
 .news-content {
@@ -78,6 +79,7 @@ ion-list{
   align-items: center;
   font-size: 0.8rem;
   gap: 7px; // Jarak antara ikon bintang dan teksnya
+  margin-left: 16px;
 }
 
 .comments {
@@ -85,4 +87,5 @@ ion-list{
   display: flex;
   align-items: center;
   gap: 4px; // Jarak antara ikon komentar dan teksnya
+  margin-left: 16px;
 }
